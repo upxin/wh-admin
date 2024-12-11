@@ -1,10 +1,11 @@
 import type * as Login from "./type"
 import { request } from "@/http/axios"
 
-/** 获取当前登陆用户详情 */
+
+// 获取用户详细信息
 export function getUserInfoApi() {
   return request<Login.UserInfoResponseData>({
-    url: "users/info",
-    method: "get"
+    url: '/system/saas/user/getInfo',
+    method: 'get'
   })
 }

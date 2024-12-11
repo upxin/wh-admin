@@ -1,27 +1,28 @@
 import type * as Table from "./type"
 import { request } from "@/http/axios"
+import qs from "qs"
 
 /** 增 */
 export function createTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
   return request({
-    url: "table",
+    url: "/system/disabledUser/addDisabledUser",
     method: "post",
     data
   })
 }
 
 /** 删 */
-export function deleteTableDataApi(id: string) {
+export function deleteTableDataApi(ids:string[]) {
   return request({
-    url: `table/${id}`,
-    method: "delete"
+    url: '/system/disabledUser/ids?ids=' + ids.join(','),
+    method: "delete",
   })
 }
 
 /** 改 */
 export function updateTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
   return request({
-    url: "table",
+    url: "/system/disabledUser/updateDisabledUser",
     method: "put",
     data
   })
@@ -30,7 +31,7 @@ export function updateTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
 /** 查 */
 export function getTableDataApi(params: Table.TableRequestData) {
   return request<Table.TableResponseData>({
-    url: "table",
+    url: "/system/disabledUser/selectPage",
     method: "get",
     params
   })

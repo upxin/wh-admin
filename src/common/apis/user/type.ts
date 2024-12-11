@@ -1,1 +1,1 @@
-export type UserInfoResponseData = ApiResponseData<{ username: string, roles: string[] }>
+export type UserInfoResponseData = { user: Record<string, any>, roles: string[] }
