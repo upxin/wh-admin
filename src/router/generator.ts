@@ -55,7 +55,6 @@ export const generateRoutes = (routerMap, parent?): any[] => {
  */
 export const generateDynamicRoutes = async (): Promise<RouteRecordRaw[]> => {
   const result = await adminMenus();
-  console.log('result===========', result)
   const router = generateRoutes(result);
   asyncImportRoute(router);
   return router;

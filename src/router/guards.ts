@@ -55,10 +55,11 @@ export function createRouterGuards(router: Router) {
       next();
       return;
     }
+
     const userInfo = await userStore.getInfo();
 
     const routes = await asyncRouteStore.generateRoutes(userInfo);
-    console.log('routes=====',userInfo, routes)
+
     // 动态添加可访问路由表
     routes.forEach((item) => {
       router.addRoute(item as unknown as RouteRecordRaw);
