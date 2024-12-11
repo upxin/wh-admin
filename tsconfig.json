@@ -1,56 +1,41 @@
+/**
+ * @link https://www.typescriptlang.org/tsconfig
+ * @link https://cn.vuejs.org/guide/typescript/overview#configuring-tsconfig-json
+ * @link https://cn.vite.dev/guide/features#typescript-compiler-options
+ */
+
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "strictFunctionTypes": false,
     "jsx": "preserve",
-    "baseUrl": ".",
-    "allowJs": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "jsxImportSource": "vue",
+    "lib": ["esnext", "dom"],
+    "useDefineForClassFields": true,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "typeRoots": [
-      "./node_modules/@types/",
-      "./types"
-    ],
-    "noImplicitAny": false,
-    "skipLibCheck": true,
+    // baseUrl 用来告诉编译器到哪里去查找模块，使用非相对模块时必须配置此项
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    // 非相对模块导入的路径映射配置，根据 baseUrl 配置进行路径计算，与 vite.config 中 alias 配置同步
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "/#/*": [
-        "types/*"
-      ]
-    }
+      "@/*": ["src/*"],
+      "@@/*": ["src/common/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["vite/client", "element-plus/global"],
+    // 允许 JS
+    "allowJs": true,
+    // TS 严格模式
+    "strict": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "types/**/*.d.ts",
-    "types/**/*.ts",
-    "build/**/*.ts",
-    "build/**/*.d.ts",
-    "mock/**/*.ts",
-    "components.d.ts",
-    "vite.config.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.js"
-  ]
+  // 需要被编译的文件列表
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue", "**/*.d.ts"],
+  // 从编译中排除的文件列表
+  "exclude": ["node_modules", "dist"]
 }

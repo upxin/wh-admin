@@ -1,27 +1,18 @@
-.DS_Store
+# Common
+dist
 node_modules
-/screenshots
-/dist
-dist.zip
-dist_electron
+.eslintcache
+vite.config.*.timestamp*
 
-# local env files
-.env.local
-.env.*.local
+# MacOS
+.DS_Store
 
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# Local env files
+*.local
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-/components.d.ts
-/components.d.ts
+# Logs
+*.log
+
+# Use the pnpm
+package-lock.json
+yarn.lock

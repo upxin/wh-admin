@@ -1,168 +1,222 @@
-## 🚀 简介
+<div align="center">
+  <img alt="logo" width="120" height="120" src="./src/common/assets/images/layouts/logo.png">
+  <h1>V3 Admin Vite</h1>
+</div>
 
-`Naive Ui Admin` 是一款 完全免费 且可商用的中后台解决方案，基于 🌟 `Vue3.0` 🌟、🚀 `Vite` 🚀、✨ [Naive UI](https://www.naiveui.com/) ✨ 和 🎉 `TypeScript` 🎉。
-它融合了最新的前端技术栈，提炼了典型的业务模型和页面，包括二次封装组件、动态菜单、权限校验等功能，助力快速搭建企业级中后台项目。
+[![github release](https://img.shields.io/github/v/release/un-pany/v3-admin-vite?style=flat)](https://github.com/un-pany/v3-admin-vite/releases)
+[![github stars](https://img.shields.io/github/stars/un-pany/v3-admin-vite?style=flat)](https://github.com/un-pany/v3-admin-vite/stargazers)
+[![gitee stars](https://gitee.com/un-pany/v3-admin-vite/badge/star.svg)](https://gitee.com/un-pany/v3-admin-vite/stargazers)
 
+<b>English | <a href="./README.zh-CN.md">中文</a></b>
 
+## Introduction
 
+V3 Admin Vite is a free and open-source foundational solution for backend management systems, based on popular technologies such as Vue3, Vite, TypeScript, Element Plus, and others
 
-## 🌈 特性
-📦 二次封装的实用高扩展性组件
-🎨 响应式、多主题、多配置，快速集成，开箱即用
-🚀 强大的鉴权系统，支持 三种鉴权模式，满足多样业务需求
-🌐 持续更新的实用性页面模板和交互设计，简化页面构建
+## Notifications
 
+> [!NOTE]
+> Powered by love! All source code is free and open-source. If you find it helpful, feel free to give a star to support!
 
-## 🎥 预览
-- [naive-ui-admin](https://jekip.github.io)
+> [!IMPORTANT]
+> Welcome to experience the brand-new version 5.0, currently in the beta stage. It will be a masterpiece!
 
-账号：admin，密码：123456（随意）
+> [!WARNING]
+> Version 4.x will no longer be maintained unless there are critical bugs! [Click to switch to the 4.x branch](https://github.com/un-pany/v3-admin-vite/tree/4.x)
 
-## 💡 提示
+> [!TIP]
+> Paid services are officially launched! If you don’t want to do it yourself but want to remove TS or other modules, try the lazy package! [Click to check it out](https://github.com/un-pany/v3-admin-vite/issues/225)
 
-如果您需要更多功能和组件，不妨尝试全新的 `NaiveAdmin`，它可能正是您寻找的解决方案
+## Usage
 
-[NaiveAdmin 官网](https://www.naiveadmin.com)
+<details>
+<summary>Recommended Environment</summary>
 
-[NaiveAdmin 变更日志](https://www.yuque.com/u5825/zaqu0e)
+<br>
 
-[为什么选我们？](https://www.naiveadmin.com/choose/we)
+- Latest version of `Visual Studio Code`
+- Install the recommended plugins in the `.vscode/extensions.json` file
+- `node` 20.x or 22+
+- `pnpm` 9+
 
-### Plus
+</details>
 
-全新设计版本，增加了众多特性，值得一试
+<details>
+<summary>Local Development</summary>
 
-基于 `NaiveUi` 组件库
-
-[NaiveAdmin Plus 预览](https://plus.naiveadmin.com)
-
-基于 `Antd` 组件库
-
-[NaiveAdmin Antd Plus 预览](https://plus-full.naiveadmin.com)
-
-### Arco vue
-
-智能设计体系，提供轻盈体验
-
-[NaiveAdmin Arco 预览](https://arco.naiveadmin.com)
-
-### Element Plus
-
-面向设计师和开发者的组件库
-
-[Element Plus Admin 预览](https://element.naiveadmin.com)
-
-### Antd vue
-
-新产品，如果您选的技术栈是 `Antd` 的话，不妨看看
-
-[NaiveAdmin Antd 预览](https://antd.naiveadmin.com)
-
-以上版本同时具备 `NaiveAdmin` 功能/组件/页面，一如既往、开箱即用，欢迎前往查看。
-
-## 📚 文档
-
-[文档地址](https://docs.naiveadmin.com)
-
-## 🛠 准备
-
-- [node](http://nodejs.org/) 和 [git](https://git-scm.com/) -项目开发环境
-- [Vite](https://vitejs.dev/) - 熟悉 vite 特性
-- [Vue3](https://v3.vuejs.org/) - 熟悉 Vue 基础语法
-- [TypeScript](https://www.typescriptlang.org/) - 熟悉`TypeScript`基本语法
-- [Es6+](http://es6.ruanyifeng.com/) - 熟悉 es6 基本语法
-- [Vue-Router-Next](https://next.router.vuejs.org/) - 熟悉 vue-router 基本使用
-- [NaiveUi](https://www.naiveui.com/) - ui 基本使用
-- [Mock.js](https://github.com/nuysoft/Mock) - mockjs 基本语法
-
-
-## 🏗️ 使用
-
-- 获取项目代码
+<br>
 
 ```bash
-git clone https://github.com/jekip/naive-ui-admin.git
+# Clone the project
+git clone https://github.com/un-pany/v3-admin-vite.git
+
+# Enter the project directory
+cd v3-admin-vite
+
+# Install dependencies
+pnpm i
+
+# Start the development server
+pnpm dev
 ```
 
-- 安装依赖
+</details>
+
+<details>
+<summary>Build</summary>
+
+<br>
 
 ```bash
-cd naive-ui-admin
+# Build for the staging environment
+pnpm build:staging
 
-pnpm install
-
-```
-
-- 运行
-
-```bash
-pnpm run dev
-```
-
-- 打包
-
-```bash
+# Build for the production environment
 pnpm build
 ```
 
-## 📜 更新日志
+</details>
 
-[CHANGELOG](./CHANGELOG.md)
+<details>
+<summary>Local Preview</summary>
 
+<br>
 
-## 🤝 如何贡献
+```bash
+# Execute the build command first to generate the dist directory, then run the preview command
+pnpm preview
+```
 
-非常欢迎你的加入！[提一个 Issue](https://github.com/jekip/naive-ui-admin/issues) 或者提交一个 `Pull Request`
+</details>
 
-**Pull Request:**
+<details>
+<summary>Code Check</summary>
 
-1. Fork 代码!
-2. 创建自己的分支: `git checkout -b feat/xxxx`
-3. 提交你的修改: `git commit -am 'feat(function): add xxxxx'`
-4. 推送您的分支: `git push origin feat/xxxx`
-5. 提交`pull request`
+<br>
 
-## 📋 Git 贡献提交规范
+```bash
+# Code linting and formatting
+pnpm lint
 
-- 参考 [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) 规范 ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
+# Unit tests
+pnpm test
+```
 
-  - `feat` 增加新功能
-  - `fix` 修复问题/BUG
-  - `style` 代码风格相关无影响运行结果的
-  - `perf` 优化/性能提升
-  - `refactor` 重构
-  - `revert` 撤销修改
-  - `test` 测试相关
-  - `docs` 文档/注释
-  - `chore` 依赖更新/脚手架配置修改等
-  - `workflow` 工作流改进
-  - `ci` 持续集成
-  - `types` 类型定义文件更改
-  - `wip` 开发中
+</details>
 
-## 🌐 浏览器支持
+<details>
+<summary>Commit Guidelines</summary>
 
-本地开发推荐使用`Chrome 80+` 浏览器
+<br>
 
-支持现代浏览器, 不支持 IE
+`feat` New feature
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| :-: | :-: | :-: | :-: | :-: |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+`fix` Bug fix
 
-## 👥 维护者
-[@Ah jung](https://github.com/jekip)
+`perf` Performance improvement
 
-## 💬 交流
+`refactor` Code refactoring
 
-有关 `Naive Ui Admin` 的使用或其他问题，欢迎加入我们的讨论群组或提出问题。
+`docs` Documentation and comments
 
-QQ1群：328347666 （已满）
-QQ2群：741353560
+`types` Type-related changes
 
-## 💖 赞助
-#### 如果您觉得这个项目对您有帮助，可以通过下面的链接为作者买一杯果汁，表示感谢！。
+`test` Unit tests related
 
-![donate](https://assets.naiveadmin.com/images/sponsor.png)
+`ci` Continuous integration, workflows
 
-[Paypal Me](https://www.paypal.com/paypalme/majunping)
+`revert` Revert changes
+
+`chore` Chores (update dependencies, modify configurations, etc)
+
+</details>
+
+## Links
+
+**Online Preview**：[github-pages](https://un-pany.github.io/v3-admin-vite)
+
+**Chinese Documentation**：[link](https://juejin.cn/post/7089377403717287972)
+
+**Zero to Hero Tutorial**：[link](https://juejin.cn/column/7207659644487139387)
+
+**Electron Desktop Version**: [v3-electron-vite](https://github.com/un-pany/v3-electron-vite)
+
+**Chinese Repository**：[gitee](https://gitee.com/un-pany/v3-admin-vite)
+
+**Optional Group**：[check how to join](https://github.com/un-pany/v3-admin-vite/issues/191)
+
+**Donations**：[buy a coffee for the author](https://github.com/un-pany/v3-admin-vite/issues/69)
+
+**Releases & Changelog**：[releases](https://github.com/un-pany/v3-admin-vite/releases)
+
+## Features
+
+**Simplified structure**: No complex encapsulation, no complicated type gymnastics, just enough to meet the needs
+
+**Detailed comments**: Every configuration item comes with as detailed comments as possible
+
+**Latest dependencies**: Keeps all third-party dependencies up to date
+
+**Consistency**: Unified code style, naming conventions, and comment style
+
+## Built-in Features
+
+**User Management**: Login, logout demonstration
+
+**Permission Management**: Page-level permissions (dynamic routing), button-level permissions (directive permissions, permission functions), route guards
+
+**Multiple Environments**: Development, staging, and production environments
+
+**Multiple Themes**: Normal, dark, and deep blue themes
+
+**Multiple Layouts**: Left-side, top, and hybrid layouts
+
+**Homepage**: Different dashboard pages for different users
+
+**Error Pages**: 403, 404
+
+**Mobile Compatibility**: Layouts compatible with mobile screen resolutions
+
+**Others**: SVG sprite sheet, dynamic sidebar, dynamic breadcrumbs, tab navigation, content zoom and fullscreen, composable functions
+
+## Tech Stack
+
+**Vue3**: Vue3 + script setup with the latest Vue3 Composition API
+
+**Element Plus**: The Vue3 version of Element UI
+
+**Pinia**: The legendary Vuex5
+
+**Vite**: Really fast
+
+**Vue Router**: The routing system
+
+**TypeScript**: A superset of JavaScript
+
+**pnpm**: A faster, disk-space-saving package manager
+
+**Scss**: Consistent with Element Plus
+
+**CSS Variables**: Primarily controls layout and color in the project
+
+**ESlint**: Code linting and formatting
+
+**Axios**: Sends network requests
+
+**UnoCSS**: A high-performance, flexible atomic CSS engine
+
+## Project Preview Image
+
+![preview](./src/common/assets/images/docs/preview.png)
+
+## Contributors
+
+A big thank you to all the contributors!
+
+<a href="https://github.com/un-pany/v3-admin-vite/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=un-pany/v3-admin-vite">
+</a>
+
+## License
+
+[MIT](./LICENSE) License © 2022-PRESENT [pany](https://github.com/pany-ang)

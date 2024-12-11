@@ -1,66 +1,128 @@
-import type { UserConfig, ConfigEnv } from 'vite';
-import { loadEnv } from 'vite';
-import { resolve } from 'path';
-import { wrapperEnv } from './build/utils';
-import { createVitePlugins } from './build/vite/plugin';
-import { OUTPUT_DIR } from './build/constant';
-import { createProxy } from './build/vite/proxy';
-import pkg from './package.json';
-import { format } from 'date-fns';
-const { dependencies, devDependencies, name, version } = pkg;
+/// <reference types="vitest/config" />
 
-const __APP_INFO__ = {
-  pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-};
+import { resolve } from "node:path"
+import vue from "@vitejs/plugin-vue"
+import vueJsx from "@vitejs/plugin-vue-jsx"
+import UnoCSS from "unocss/vite"
+import AutoImport from "unplugin-auto-import/vite"
+import SvgComponent from "unplugin-svg-component/vite"
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
+import Components from "unplugin-vue-components/vite"
+import { defineConfig, loadEnv } from "vite"
+import svgLoader from "vite-svg-loader"
 
-function pathResolve(dir: string) {
-  return resolve(process.cwd(), '.', dir);
-}
-
-export default ({ command, mode }: ConfigEnv): UserConfig => {
-  const root = process.cwd();
-  const env = loadEnv(mode, root);
-  const viteEnv = wrapperEnv(env);
-  const { VITE_PUBLIC_PATH, VITE_PORT, VITE_PROXY } = viteEnv;
-  const isBuild = command === 'build';
+// Configuring Vite: https://cn.vite.dev/config
+export default defineConfig(({ mode }) => {
+  const { VITE_PUBLIC_PATH } = loadEnv(mode, process.cwd(), "") as ImportMetaEnv
   return {
+    // 开发或打包构建时用到的公共基础路径
     base: VITE_PUBLIC_PATH,
-    esbuild: {},
     resolve: {
-      alias: [
-        {
-          find: /\/#\//,
-          replacement: pathResolve('types') + '/',
-        },
-        {
-          find: '@',
-          replacement: pathResolve('src') + '/',
-        },
-      ],
-      dedupe: ['vue'],
+      alias: {
+        // @ 符号指向 src 目录
+        "@": resolve(__dirname, "src"),
+        // @@ 符号指向 src/common 通用目录
+        "@@": resolve(__dirname, "src/common")
+      }
     },
-    plugins: createVitePlugins(viteEnv, isBuild),
-    define: {
-      __APP_ENV__: JSON.stringify(env.APP_ENV),
-      __APP_INFO__: JSON.stringify(__APP_INFO__),
-      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
-    },
+    // 开发环境服务器配置
     server: {
+      // 是否监听所有地址
       host: true,
-      port: VITE_PORT,
-      proxy: createProxy(VITE_PROXY),
+      // 端口号
+      port: 3333,
+      // 端口被占用时，是否直接退出
+      strictPort: false,
+      // 是否自动打开浏览器
+      open: false,
+      // 反向代理
+      proxy: {
+        "/api/v1": {
+          target: "http://47.100.214.251:8181",
+          // 是否为 WebSocket
+          ws: false,
+          // 是否允许跨域
+          changeOrigin: true
+        }
+      },
+      // 是否允许跨域
+      cors: true,
+      // 预热常用文件，提高初始页面加载速度
+      warmup: {
+        clientFiles: ["./src/layouts/**/*.vue"]
+      }
     },
-    optimizeDeps: {
-      include: [],
-      exclude: ['vue-demi'],
-    },
+    // 构建配置
     build: {
-      target: 'es2015',
-      cssTarget: 'chrome80',
-      outDir: OUTPUT_DIR,
+      // 自定义底层的 Rollup 打包配置
+      rollupOptions: {
+        output: {
+          /**
+           * @name 分块策略
+           * @description 1. 注意这些包名必须存在，否则打包会报错
+           * @description 2. 如果你不想自定义 chunk 分割策略，可以直接移除这段配置
+           */
+          manualChunks: {
+            vue: ["vue", "vue-router", "pinia"],
+            element: ["element-plus", "@element-plus/icons-vue"],
+            vxe: ["vxe-table"]
+          }
+        }
+      },
+      // 是否开启 gzip 压缩大小报告，禁用时能略微提高构建性能
       reportCompressedSize: false,
-      chunkSizeWarningLimit: 2000,
+      // 单个 chunk 文件的大小超过 2048kB 时发出警告
+      chunkSizeWarningLimit: 2048
     },
-  };
-};
+    // 混淆器
+    esbuild:
+      mode === "development"
+        ? undefined
+        : {
+            // 打包构建时移除 console.log
+            pure: ["console.log"],
+            // 打包构建时移除 debugger
+            drop: ["debugger"],
+            // 打包构建时移除所有注释
+            legalComments: "none"
+          },
+    // 插件配置
+    plugins: [
+      vue(),
+      // 支持 JSX、TSX 语法
+      vueJsx(),
+      // 支持将 SVG 文件导入为 Vue 组件
+      svgLoader({ defaultImport: "url" }),
+      // 自动生成 SvgIcon 组件和 SVG 雪碧图
+      SvgComponent({
+        iconDir: [resolve(__dirname, "src/common/assets/icons")],
+        preserveColor: resolve(__dirname, "src/common/assets/icons/preserve-color"),
+        dts: true,
+        dtsDir: resolve(__dirname, "types/auto")
+      }),
+      // 原子化 CSS
+      UnoCSS(),
+      // 自动按需导入 API
+      AutoImport({
+        imports: ["vue", "vue-router", "pinia"],
+        dts: "types/auto/auto-imports.d.ts",
+        resolvers: [ElementPlusResolver()]
+      }),
+      // 自动按需导入组件
+      Components({
+        dts: "types/auto/components.d.ts",
+        resolvers: [ElementPlusResolver()]
+      })
+    ],
+    // Configuring Vitest: https://cn.vitest.dev/config
+    test: {
+      include: ["tests/**/*.test.{ts,js}"],
+      environment: "happy-dom",
+      server: {
+        deps: {
+          inline: ["element-plus"]
+        }
+      }
+    }
+  }
+})
