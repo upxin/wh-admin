@@ -23,3 +23,15 @@ export const uploadFile = <T>(files: { raw:File }[], data: Record<string, any> =
     data: formData
   })
 }
+
+
+
+export function downTemplate() {
+  return request({
+    headers:{
+      responseType: 'blob' // 确保返回的数据是 Blob 类型
+    },
+    url: '/system/disabledUser/downTemplate',
+    method: 'get'
+  })
+}

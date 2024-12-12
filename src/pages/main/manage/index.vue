@@ -3,9 +3,9 @@ import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/ty
 import type { FormInstance, FormRules } from "element-plus"
 import { createTableDataApi, deleteTableDataApi, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
-import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search , Upload } from "@element-plus/icons-vue"
+import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search, Upload } from "@element-plus/icons-vue"
 import { cloneDeep } from "lodash-es"
-import { uploadFile } from '@@/apis/common'
+import { uploadFile, downTemplate } from '@@/apis/common'
 
 defineOptions({
   // 命名当前组件
@@ -27,12 +27,14 @@ const formData = ref<CreateOrUpdateTableRequestData>({
   pointAddress: '',
   sex: '',
   userName: '',
+  disabledCard: '',
+  employmentDate: ''
 })
 const formRules: FormRules<TableData> = {
   userName: [{ required: true, trigger: "blur", message: "请输入用户名" }],
   phonenumber: [{ required: true, trigger: "blur", message: "请输入手机" }],
   idCard: [{ required: true, trigger: "blur", message: "请输入身份证" }],
-  pointAddress: [{ required: true, trigger: "blur", message: "请输入地址" }],
+  pointAddress: [{ required: true, trigger: "blur", message: "请输入打卡地址" }],
 }
 function handleCreateOrUpdate() {
   formRef.value?.validate((valid) => {
@@ -54,13 +56,15 @@ function handleCreateOrUpdate() {
 function resetForm() {
   formRef.value?.clearValidate()
   formData.value = {
-    id:'',
+    employmentDate: '',
+    id: '',
     company: '',
     idCard: '',
     phonenumber: '',
     pointAddress: '',
     sex: '',
     userName: '',
+    disabledCard: ''
   }
 }
 // #endregion
@@ -79,8 +83,8 @@ function handleDelete(row: TableData) {
   })
 }
 function delMultiple() {
-  const names = multipleSelection.value.map(item=> item.userName).join(',')
-  const ids = multipleSelection.value.map(item=> item.id)
+  const names = multipleSelection.value.map(item => item.userName).join(',')
+  const ids = multipleSelection.value.map(item => item.id)
 
   ElMessageBox.confirm(`正在删除用户：${names}，确认删除？`, "提示", {
     confirmButtonText: "确定",
@@ -115,11 +119,11 @@ function getTableData() {
     pageNum: paginationData.currentPage,
     pageSize: paginationData.pageSize,
   }
-  if( searchData.userName) {
-    Reflect.set(opts,'userName',searchData.userName)
+  if (searchData.userName) {
+    Reflect.set(opts, 'userName', searchData.userName)
   }
-  if( searchData.phonenumber) {
-    Reflect.set(opts,'phonenumber',searchData.phonenumber)
+  if (searchData.phonenumber) {
+    Reflect.set(opts, 'phonenumber', searchData.phonenumber)
   }
 
   getTableDataApi(opts).then((res) => {
@@ -145,11 +149,33 @@ function customUpload() {
     fileList.value = []
   })
 }
-function handleAdd(){
+function handleAdd() {
   dialogVisible.value = true
   resetForm()
 }
+// 解析导出的二进制文件流
+async function downloadExcel() {
+  try {
+    const response = await downTemplate()
+    console.log(response)
+    // 创建一个 URL 对象
+    const url = window.URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
+    const link = document.createElement('a')
+    link.href = url
 
+    // 设置下载文件名
+    link.setAttribute('download', '模板.xlsx')
+
+    // 触发下载
+    document.body.appendChild(link)
+    link.click()
+
+    // 移除链接
+    document.body.removeChild(link)
+  } catch (error) {
+    console.error('Error exporting Excel file:', error)
+  }
+}
 const multipleSelection = ref<TableData[]>([])
 const handleSelectionChange = (val: TableData[]) => {
   multipleSelection.value = val
@@ -161,12 +187,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
 <template>
   <div class="app-container">
     <el-card v-loading="loading" shadow="never" class="search-wrapper">
-      <el-form ref="searchFormRef" :inline="true" :model="searchData">
+      <el-form ref="searchFormRef" :inline="true" :model="searchData" label-position="right">
         <el-form-item prop="phone" label="手机号">
-          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable/>
+          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable />
         </el-form-item>
         <el-form-item prop="userName" label="用户名">
-          <el-input v-model="searchData.userName" placeholder="请输入" clearable/>
+          <el-input v-model="searchData.userName" placeholder="请输入" clearable />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">
@@ -183,29 +209,27 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <div flex>
           <el-upload v-model:file-list="fileList" action="" multiple :limit="3" :http-request="customUpload"
             class="mr-10px" accept=".xlsx,.xls">
-            <el-button type="primary" :icon="Upload">批量导入</el-button>
+            <el-button type="primary">批量导入</el-button>
           </el-upload>
-          <el-button type="primary" :icon="CirclePlus" @click="handleAdd">
+          <el-button type="primary" @click="handleAdd">
             新增用户
-          </el-button> 
-          <el-button type="danger" :icon="Delete" @click="delMultiple">
+          </el-button>
+
+          <el-button type="primary" @click="downloadExcel">
+            模板下载
+          </el-button>
+
+          <el-button type="danger" @click="delMultiple">
             批量删除
           </el-button>
-        </div>
-        <div>
-          <el-tooltip content="下载">
-            <el-button type="primary" :icon="Download" circle />
-          </el-tooltip>
-          <el-tooltip content="刷新当前页">
-            <el-button type="primary" :icon="RefreshRight" circle @click="getTableData" />
-          </el-tooltip>
+
         </div>
       </div>
       <div class="table-wrapper">
-        <el-table :data="tableData"  @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column prop="userName" label="用户名" align="center" />
-          <el-table-column prop="sex" label="性别" align="center">
+        <el-table :data="tableData" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="50" />
+          <el-table-column prop="userName" label="用户名" width="100" />
+          <el-table-column prop="sex" label="性别" width="100">
             <template #default="scope">
               <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
                 女
@@ -215,12 +239,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="phonenumber" label="手机号" align="center" />
-          <el-table-column prop="pointAddress" label="地址" align="center" />
-          <el-table-column prop="idCard" label="身份证" align="center">
-          </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center" />
-          <el-table-column fixed="right" label="操作" width="150" align="center">
+          <el-table-column prop="phonenumber" label="手机号" width="150" />
+          <el-table-column prop="pointAddress" label="打卡地址" width="220" />
+          <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
+          <el-table-column prop="disabledCard" label="残疾人证" width="200" />
+          <el-table-column prop="employmentDate" label="入职时间" width="150" />
+          <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
+          <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
               <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">
                 修改
@@ -239,23 +264,25 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
     </el-card>
     <!-- 新增/修改 -->
-    <el-dialog v-model="dialogVisible" :title="!formData.id ? '新增用户' : '修改用户'" width="500px"
-      @closed="resetForm">
-      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="left">
+    <el-dialog v-model="dialogVisible" :title="!formData.id ? '新增用户' : '修改用户'" width="500px" @closed="resetForm">
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="right">
         <el-form-item prop="userName" label="用户名">
-          <el-input v-model="formData.userName" placeholder="请输入" />
+          <el-input v-model="formData.userName" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item prop="idCard" label="身份证">
-          <el-input v-model="formData.idCard" placeholder="请输入" />
+          <el-input v-model="formData.idCard" placeholder="请输入身份证" />
+        </el-form-item>
+        <el-form-item prop="disabledCard" label="残疾人证">
+          <el-input v-model="formData.disabledCard" placeholder="请输入残疾人证" />
         </el-form-item>
         <el-form-item prop="phonenumber" label="手机号">
-          <el-input v-model="formData.phonenumber" placeholder="请输入" />
+          <el-input v-model="formData.phonenumber" placeholder="请输入手机号" />
         </el-form-item>
-        <el-form-item prop="pointAddress" label="地址">
-          <el-input v-model="formData.pointAddress" placeholder="请输入" />
+        <el-form-item prop="pointAddress" label="打卡地址">
+          <el-input v-model="formData.pointAddress" placeholder="请输入打卡地址" />
         </el-form-item>
         <el-form-item prop="company" label="公司">
-          <el-input v-model="formData.company" placeholder="请输入" />
+          <el-input v-model="formData.company" placeholder="请输入公司" />
         </el-form-item>
         <el-form-item prop="sex" label="性别">
           <el-radio-group v-model="formData.sex">
@@ -263,6 +290,10 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
             <el-radio value="0">女</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item prop="employmentDate" label="入职时间">
+          <el-date-picker v-model="formData.employmentDate" type="date" value-format="YYYY-MM-DD" format="YYYY-MM-DD" placeholder="请选择入职时间"/>
+        </el-form-item>
+
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">

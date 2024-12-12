@@ -83,6 +83,15 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
+        path: "user",
+        component: () => import("@/pages/main/user/index.vue"),
+        name: "User",
+        meta: {
+          title: "用户管理",
+          keepAlive: true
+        }
+      },
+      {
         path: "vxe-table",
         component: () => import("@/pages/main/vxe-table/index.vue"),
         name: "VxeTable",

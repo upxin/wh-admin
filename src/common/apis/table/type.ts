@@ -6,6 +6,8 @@ export interface CreateOrUpdateTableRequestData {
   sex: string
   userName: string
   id: string
+  employmentDate:string
+  disabledCard: string
 }
 
 export interface TableRequestData {
