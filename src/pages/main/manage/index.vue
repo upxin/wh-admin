@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/type"
 import type { FormInstance, FormRules } from "element-plus"
-import { createTableDataApi, deleteTableDataApi, getTableDataApi, updateTableDataApi } from "@@/apis/table"
+import { downTemplate, uploadFile } from "@@/apis/common"
+import { createTableDataApi, deleteTableDataApi, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
 import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search, Upload } from "@element-plus/icons-vue"
 import { cloneDeep } from "lodash-es"
-import { uploadFile, downTemplate } from '@@/apis/common'
 
 defineOptions({
   // 命名当前组件
@@ -15,26 +15,25 @@ defineOptions({
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
 
-
 const fileList = ref([])
 const dialogVisible = ref<boolean>(false)
 const formRef = ref<FormInstance | null>(null)
 const formData = ref<CreateOrUpdateTableRequestData>({
-  id: '',
-  company: '',
-  idCard: '',
-  phonenumber: '',
-  pointAddress: '',
-  sex: '',
-  userName: '',
-  disabledCard: '',
-  employmentDate: ''
+  id: "",
+  company: "",
+  idCard: "",
+  phonenumber: "",
+  pointAddress: "",
+  sex: "",
+  userName: "",
+  disabledCard: "",
+  employmentDate: ""
 })
 const formRules: FormRules<TableData> = {
   userName: [{ required: true, trigger: "blur", message: "请输入用户名" }],
   phonenumber: [{ required: true, trigger: "blur", message: "请输入手机" }],
   idCard: [{ required: true, trigger: "blur", message: "请输入身份证" }],
-  pointAddress: [{ required: true, trigger: "blur", message: "请输入打卡地址" }],
+  pointAddress: [{ required: true, trigger: "blur", message: "请输入打卡地址" }]
 }
 function handleCreateOrUpdate() {
   formRef.value?.validate((valid) => {
@@ -56,15 +55,15 @@ function handleCreateOrUpdate() {
 function resetForm() {
   formRef.value?.clearValidate()
   formData.value = {
-    employmentDate: '',
-    id: '',
-    company: '',
-    idCard: '',
-    phonenumber: '',
-    pointAddress: '',
-    sex: '',
-    userName: '',
-    disabledCard: ''
+    employmentDate: "",
+    id: "",
+    company: "",
+    idCard: "",
+    phonenumber: "",
+    pointAddress: "",
+    sex: "",
+    userName: "",
+    disabledCard: ""
   }
 }
 // #endregion
@@ -83,7 +82,7 @@ function handleDelete(row: TableData) {
   })
 }
 function delMultiple() {
-  const names = multipleSelection.value.map(item => item.userName).join(',')
+  const names = multipleSelection.value.map(item => item.userName).join(",")
   const ids = multipleSelection.value.map(item => item.id)
 
   ElMessageBox.confirm(`正在删除用户：${names}，确认删除？`, "提示", {
@@ -117,13 +116,13 @@ function getTableData() {
   loading.value = true
   const opts = {
     pageNum: paginationData.currentPage,
-    pageSize: paginationData.pageSize,
+    pageSize: paginationData.pageSize
   }
   if (searchData.userName) {
-    Reflect.set(opts, 'userName', searchData.userName)
+    Reflect.set(opts, "userName", searchData.userName)
   }
   if (searchData.phonenumber) {
-    Reflect.set(opts, 'phonenumber', searchData.phonenumber)
+    Reflect.set(opts, "phonenumber", searchData.phonenumber)
   }
 
   getTableDataApi(opts).then((res) => {
@@ -153,18 +152,15 @@ function handleAdd() {
   dialogVisible.value = true
   resetForm()
 }
-// 解析导出的二进制文件流
-async function downloadExcel() {
+async function getExcel(response: Blob) {
   try {
-    const response = await downTemplate()
-    console.log(response)
     // 创建一个 URL 对象
-    const url = window.URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
-    const link = document.createElement('a')
+    const url = window.URL.createObjectURL(new Blob([response]))
+    const link = document.createElement("a")
     link.href = url
 
     // 设置下载文件名
-    link.setAttribute('download', '模板.xlsx')
+    link.setAttribute("download", "模板.xlsx")
 
     // 触发下载
     document.body.appendChild(link)
@@ -173,12 +169,33 @@ async function downloadExcel() {
     // 移除链接
     document.body.removeChild(link)
   } catch (error) {
-    console.error('Error exporting Excel file:', error)
+    console.error("Error exporting Excel file:", error)
   }
 }
+// 解析导出的二进制文件流
+async function downloadExcel() {
+  const response = await downTemplate() as Blob
+  console.log("downloadExcel====", response)
+
+  getExcel(response)
+}
+async function exportExcel() {
+  const opts = {
+    exportFlag: 1,
+    pageNum: 1,
+    pageSize: 999
+  }
+  getMan(opts).then((res) => {
+    console.log("getTableDataApi====", res)
+    getExcel(res)
+  })
+}
 const multipleSelection = ref<TableData[]>([])
-const handleSelectionChange = (val: TableData[]) => {
+function handleSelectionChange(val: TableData[]) {
   multipleSelection.value = val
+}
+function handleDetail(row) {
+
 }
 // 监听分页参数的变化
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
@@ -207,9 +224,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
         <div flex>
-          <el-upload v-model:file-list="fileList" action="" multiple :limit="3" :http-request="customUpload"
-            class="mr-10px" accept=".xlsx,.xls">
-            <el-button type="primary">批量导入</el-button>
+          <el-upload
+            v-model:file-list="fileList" action="" multiple :limit="3" :http-request="customUpload"
+            class="mr-10px" accept=".xlsx,.xls"
+          >
+            <el-button type="primary">
+              批量导入
+            </el-button>
           </el-upload>
           <el-button type="primary" @click="handleAdd">
             新增用户
@@ -223,6 +244,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
             批量删除
           </el-button>
 
+          <el-button type="primary" @click="exportExcel">
+            导出列表
+          </el-button>
         </div>
       </div>
       <div class="table-wrapper">
@@ -241,12 +265,15 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           </el-table-column>
           <el-table-column prop="phonenumber" label="手机号" width="150" />
           <el-table-column prop="pointAddress" label="打卡地址" width="220" />
-          <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
+          <el-table-column prop="idCard" label="身份证" width="200" />
           <el-table-column prop="disabledCard" label="残疾人证" width="200" />
           <el-table-column prop="employmentDate" label="入职时间" width="150" />
           <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
+              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row)">
+                查看详情
+              </el-button>
               <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">
                 修改
               </el-button>
@@ -258,9 +285,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-table>
       </div>
       <div class="pager-wrapper">
-        <el-pagination background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
+        <el-pagination
+          background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
           :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
-          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+          @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        />
       </div>
     </el-card>
     <!-- 新增/修改 -->
@@ -286,14 +315,20 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-form-item>
         <el-form-item prop="sex" label="性别">
           <el-radio-group v-model="formData.sex">
-            <el-radio value="1">男</el-radio>
-            <el-radio value="0">女</el-radio>
+            <el-radio value="1">
+              男
+            </el-radio>
+            <el-radio value="0">
+              女
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="employmentDate" label="入职时间">
-          <el-date-picker v-model="formData.employmentDate" type="date" value-format="YYYY-MM-DD" format="YYYY-MM-DD" placeholder="请选择入职时间"/>
+          <el-date-picker
+            v-model="formData.employmentDate" type="date" value-format="YYYY-MM-DD" format="YYYY-MM-DD"
+            placeholder="请选择入职时间"
+          />
         </el-form-item>
-
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">
