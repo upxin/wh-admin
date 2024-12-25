@@ -11,7 +11,7 @@ defineOptions({
   // 命名当前组件
   name: "ElementPlus"
 })
-
+const router = useRouter()
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
 
@@ -194,8 +194,16 @@ const multipleSelection = ref<TableData[]>([])
 function handleSelectionChange(val: TableData[]) {
   multipleSelection.value = val
 }
-function handleDetail(row) {
-
+function handleDetail(row, bizType) {
+  const { id: bizId, phonenumber } = row
+  router.push({
+    path: "/main/disabled-detail",
+    query: {
+      bizType,
+      bizId,
+      phonenumber
+    }
+  })
 }
 // 监听分页参数的变化
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
@@ -239,21 +247,19 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-button type="primary" @click="downloadExcel">
             模板下载
           </el-button>
-
-          <el-button type="danger" @click="delMultiple">
-            批量删除
-          </el-button>
-
           <el-button type="primary" @click="exportExcel">
             导出列表
+          </el-button>
+          <el-button type="danger" @click="delMultiple">
+            批量删除
           </el-button>
         </div>
       </div>
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" />
-          <el-table-column prop="userName" label="用户名" width="100" />
-          <el-table-column prop="sex" label="性别" width="100">
+          <el-table-column prop="userName" label="用户名" width="120" />
+          <el-table-column prop="sex" label="性别" width="120">
             <template #default="scope">
               <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
                 女
@@ -263,16 +269,25 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="phonenumber" label="手机号" width="150" />
-          <el-table-column prop="pointAddress" label="打卡地址" width="220" />
-          <el-table-column prop="idCard" label="身份证" width="200" />
-          <el-table-column prop="disabledCard" label="残疾人证" width="200" />
-          <el-table-column prop="employmentDate" label="入职时间" width="150" />
+          <el-table-column prop="phonenumber" label="手机号" width="200" />
+          <el-table-column prop="employmentDate" label="入职时间" width="200" />
           <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
-          <el-table-column fixed="right" label="操作" width="150">
+          <el-table-column prop="disabledCard" label="残疾人证" width="220" />
+          <el-table-column prop="idCard" label="身份证" width="200" />
+          <el-table-column prop="pointAddress" label="打卡地址" />
+          <el-table-column fixed="right" label="操作" width="490">
             <template #default="scope">
-              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row)">
-                查看详情
+              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'pointRecord')">
+                打卡记录
+              </el-button>
+              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'task')">
+                任务详情
+              </el-button>
+              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'contract')">
+                合同详情
+              </el-button>
+              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'pay')">
+                薪酬详情
               </el-button>
               <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">
                 修改

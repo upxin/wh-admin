@@ -35,3 +35,18 @@ export function downTemplate() {
     method: "get"
   })
 }
+
+export function getByBiz(params: any) {
+  return request({
+    url: "/file/file/getByBiz",
+    params,
+    method: "get"
+  })
+}
+
+export function deleteFile(id: string) {
+  return request({
+    url: `/file/file/${id}`,
+    method: "delete"
+  })
+}

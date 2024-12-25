@@ -56,7 +56,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/pages/dashboard/index.vue"),
         name: "Dashboard",
         meta: {
-          title: "首页",
+          title: "Banner管理",
           svgIcon: "dashboard",
           affix: true
         }
@@ -66,7 +66,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/main",
     component: Layouts,
-    redirect: "/main/manage",
+    redirect: "/main/disabled",
     name: "Demo",
     meta: {
       title: "人员管理",
@@ -74,12 +74,12 @@ export const constantRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "manage",
-        component: () => import("@/pages/main/manage/index.vue"),
+        path: "disabled",
+        component: () => import("@/pages/main/disabled/index.vue"),
         name: "Manage",
         meta: {
           title: "残疾人信息",
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -88,18 +88,28 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "User",
         meta: {
           title: "用户管理",
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
-        path: "vxe-table",
-        component: () => import("@/pages/main/vxe-table/index.vue"),
-        name: "VxeTable",
+        path: "disabled-detail",
+        component: () => import("@/pages/main/disabled-detail/index.vue"),
+        name: "DisabledDetail",
         meta: {
-          title: "Vxe Table",
-          keepAlive: true
+          title: "",
+          keepAlive: false,
+          hidden: true
         }
-      },
+      }
+      // {
+      //   path: "vxe-table",
+      //   component: () => import("@/pages/main/vxe-table/index.vue"),
+      //   name: "VxeTable",
+      //   meta: {
+      //     title: "Vxe Table",
+      //     keepAlive: false
+      //   }
+      // },
       // {
       //   path: "level2",
       //   component: () => import("@/pages/main/level2/index.vue"),
@@ -116,7 +126,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       //       name: "Level3",
       //       meta: {
       //         title: "三级路由",
-      //         keepAlive: true
+      //         keepAlive: false
       //       }
       //     }
       //   ]
@@ -156,7 +166,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       //   ]
       // }
     ]
-  },
+  }
 ]
 
 /**

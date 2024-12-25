@@ -10,11 +10,12 @@ const { initGreyAndColorWeakness } = useGreyAndColorWeakness()
 // 初始化主题
 initTheme()
 // 初始化灰色模式和色弱模式
+
 initGreyAndColorWeakness()
 </script>
 
 <template>
-  <el-config-provider :locale="zhCn" :size="'large'">
+  <el-config-provider :locale="zhCn" size="default">
     <router-view />
   </el-config-provider>
 </template>

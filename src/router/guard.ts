@@ -10,11 +10,19 @@ import NProgress from "nprogress"
 
 NProgress.configure({ showSpinner: false })
 const { setTitle } = useTitle()
-
+const titleMap = {
+  task: "任务详情",
+  pointRecord: "打卡记录",
+  contract: "合同详情",
+  pay: "薪酬详情"
+}
 export function registerNavigationGuard(router: Router) {
   // 全局前置守卫
   router.beforeEach(async (to, _from) => {
     NProgress.start()
+    if (to.query.bizType) {
+      to.meta.title = titleMap[to.query.bizType]
+    }
     const userStore = useUserStore()
     const permissionStore = usePermissionStore()
     // 如果没有登陆
