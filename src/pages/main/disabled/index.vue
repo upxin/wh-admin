@@ -29,11 +29,15 @@ const formData = ref<CreateOrUpdateTableRequestData>({
   disabledCard: "",
   employmentDate: ""
 })
-const formRules: FormRules<TableData> = {
+const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   userName: [{ required: true, trigger: "blur", message: "请输入用户名" }],
   phonenumber: [{ required: true, trigger: "blur", message: "请输入手机" }],
   idCard: [{ required: true, trigger: "blur", message: "请输入身份证" }],
-  pointAddress: [{ required: true, trigger: "blur", message: "请输入打卡地址" }]
+  pointAddress: [{ required: true, trigger: "blur", message: "请输入打卡地址" }],
+  disabledCard: [{ required: true, trigger: "blur", message: "请输入残疾人证" }],
+  employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间入" }],
+  sex: [{ required: true, trigger: "blur", message: "请选择性别" }],
+  company: [{ required: true, trigger: "blur", message: "请输入公司" }]
 }
 function handleCreateOrUpdate() {
   formRef.value?.validate((valid) => {
