@@ -38,12 +38,12 @@ export default defineConfig(({ mode }) => {
       // 反向代理
       proxy: {
         "/api/v1": {
-          target: "http://47.100.214.251:8181",
+          target: "https://dameitec.com/dev-api",
           // 是否为 WebSocket
           ws: false,
           // 是否允许跨域
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/v1/, "")
+          rewrite: path => path.replace(/^\/api\/v1/, "")
         }
       },
       // 是否允许跨域

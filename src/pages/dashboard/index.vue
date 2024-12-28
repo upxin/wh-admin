@@ -11,6 +11,7 @@ const fileList = ref([])
 function customUpload() {
   uploadBannerFile(fileList.value).then((res) => {
     fileList.value = []
+    getTableData()
   })
 }
 function handleDelete(row) {
@@ -47,7 +48,7 @@ onBeforeMount(() => {
       <div class="toolbar-wrapper">
         <el-upload
           style="width: 140px;"
-          v-model:file-list="fileList" action="" multiple :limit="3" :http-request="customUpload" class="mr-10px"
+          v-model:file-list="fileList" action="" multiple :limit="1" :http-request="customUpload" class="mr-10px"
           accept=".jpg,.png,.jpge,.webp"
         >
           <el-button type="primary">
