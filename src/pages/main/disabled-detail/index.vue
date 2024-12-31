@@ -23,7 +23,7 @@ function handleDelete(row: TableData) {
     cancelButtonText: "取消",
     type: "warning"
   }).then(() => {
-    const { bizType, bizId, phonenumber } = route.query
+    const { bizType } = route.query
     if (bizType === "pointRecord") {
       delPointRecord([row.id]).then(() => {
         ElMessage.success("删除成功")
@@ -55,14 +55,15 @@ function delMultiple() {
 
 const tableData = ref<TableData[]>([])
 function getTableData() {
-  const { bizType, bizId, phonenumber } = route.query
+  const { bizType, bizId } = route.query
   if (bizType === "pointRecord") {
     pointRecord({
-      phonenumber,
+      userId: bizId,
       pageSize: paginationData.pageSize,
       pageNum: paginationData.currentPage
     }).then((res) => {
       tableData.value = res.rows
+      paginationData.total = res.total
     })
     return
   }
@@ -73,6 +74,7 @@ function getTableData() {
     bizId
   }).then((res) => {
     tableData.value = res.data
+    paginationData.total = res.total
   })
 }
 const multipleSelection = ref<TableData[]>([])
