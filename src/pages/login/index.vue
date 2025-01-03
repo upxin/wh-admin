@@ -26,9 +26,9 @@ const loading = ref(false)
 
 /** 登录表单数据 */
 const loginFormData: LoginRequestData = reactive({
-  "username": "enjoy",
+  "username": "",
   "tenantCode": "enjoy",
-  "password": "123456"
+  "password": ""
 })
 
 /** 登录表单校验规则 */
