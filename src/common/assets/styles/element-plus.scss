@@ -1,4 +1,11 @@
 // 自定义 Element Plus 样式
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+  $colors: (
+    "primary": (
+      "base": green,
+    ),
+  )
+);
 
 // 卡片
 .el-card {

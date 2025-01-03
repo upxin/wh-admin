@@ -38,15 +38,15 @@ function handleDelete(row: TableData) {
   })
 }
 function delMultiple() {
-  const names = multipleSelection.value.map(item => item.userName).join(",")
+  const createTimes = multipleSelection.value.map(item => item.createTime).join(",")
   const ids = multipleSelection.value.map(item => item.id)
-
-  ElMessageBox.confirm(`正在删除用户：${names}，确认删除？`, "提示", {
+  if (!ids.length) return ElMessage.error("请选择")
+  ElMessageBox.confirm(`正在删除打卡记录：${createTimes}，确认删除？`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"
   }).then(() => {
-    deleteTableDataApi(ids).then(() => {
+    delPointRecord(ids).then(() => {
       ElMessage.success("删除成功")
       getTableData()
     })
@@ -138,6 +138,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="50" />
           <el-table-column :label="type">
             <template #default="scope">
               <el-image style="width: 100px;height: 100px;" v-if="getFileType(scope.row.url) === 'image'" :src="scope.row.url" :preview-src-list="[scope.row.url]" />
