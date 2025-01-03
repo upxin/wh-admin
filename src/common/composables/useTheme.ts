@@ -18,10 +18,10 @@ const themeList: ThemeList[] = [
     title: "默认",
     name: DEFAULT_THEME_NAME
   },
-  {
-    title: "黑暗",
-    name: "dark"
-  },
+  // {
+  //   title: "黑暗",
+  //   name: "dark"
+  // },
   {
     title: "深蓝",
     name: "dark-blue"

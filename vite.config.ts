@@ -25,6 +25,13 @@ export default defineConfig(({ mode }) => {
         "@@": resolve(__dirname, "src/common")
       }
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/styles/element.scss" as *;`
+        }
+      }
+    },
     // 开发环境服务器配置
     server: {
       // 是否监听所有地址
@@ -112,7 +119,7 @@ export default defineConfig(({ mode }) => {
       // 自动按需导入组件
       Components({
         dts: "types/auto/components.d.ts",
-        resolvers: [ElementPlusResolver()]
+        resolvers: [ElementPlusResolver({ importStyle: "sass" })]
       })
     ],
     // Configuring Vitest: https://cn.vitest.dev/config
