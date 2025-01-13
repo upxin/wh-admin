@@ -1,6 +1,5 @@
 import type * as Table from "./type"
 import { request } from "@/http/axios"
-import qs from "qs"
 
 /** 增 */
 export function createTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
@@ -47,5 +46,13 @@ export function getMan(params) {
     url: "/system/disabledUser/selectPage",
     method: "get",
     params
+  })
+}
+
+export function disabledUserLeave(id: string) {
+  return request<any>({
+    url: "/system/disabledUser/leave",
+    method: "get",
+    params: { id }
   })
 }

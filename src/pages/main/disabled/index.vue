@@ -2,9 +2,9 @@
 import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/type"
 import type { FormInstance, FormRules } from "element-plus"
 import { downTemplate, uploadFile } from "@@/apis/common"
-import { createTableDataApi, deleteTableDataApi, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
+import { createTableDataApi, deleteTableDataApi, disabledUserLeave, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
-import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search, Upload } from "@element-plus/icons-vue"
+import { ArrowDown, Refresh, Search } from "@element-plus/icons-vue"
 import { cloneDeep } from "lodash-es"
 
 defineOptions({
@@ -85,6 +85,18 @@ function handleDelete(row: TableData) {
     })
   })
 }
+function dimission(row: TableData) {
+  ElMessageBox.confirm(`确认离职该职工吗：${row.userName}？`, "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(() => {
+    disabledUserLeave(row.id).then(() => {
+      ElMessage.success("离职成功")
+      getTableData()
+    })
+  })
+}
 function delMultiple() {
   const names = multipleSelection.value.map(item => item.userName).join(",")
   const ids = multipleSelection.value.map(item => item.id)
@@ -120,7 +132,8 @@ function getTableData() {
   loading.value = true
   const opts = {
     pageNum: paginationData.currentPage,
-    pageSize: paginationData.pageSize
+    pageSize: paginationData.pageSize,
+    status: "0" // 在职
   }
   if (searchData.userName) {
     Reflect.set(opts, "userName", searchData.userName)
@@ -217,7 +230,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
   <div class="app-container">
     <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData" label-position="right">
-        <el-form-item prop="phone" label="手机号">
+        <el-form-item prop="phonenumber" label="手机号">
           <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable />
         </el-form-item>
         <el-form-item prop="userName" label="用户名">
@@ -279,26 +292,52 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="disabledCard" label="残疾人证" width="220" />
           <el-table-column prop="idCard" label="身份证" width="200" />
           <el-table-column prop="pointAddress" label="打卡地址" />
-          <el-table-column fixed="right" label="操作" width="490">
+          <el-table-column prop="company" label="所属公司" />
+
+          <el-table-column fixed="right" label="操作" width="300">
             <template #default="scope">
-              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'pointRecord')">
-                打卡记录
-              </el-button>
-              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'task')">
-                任务详情
-              </el-button>
-              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'contract')">
-                合同详情
-              </el-button>
-              <el-button type="primary" text bg size="small" @click="handleDetail(scope.row, 'pay')">
-                薪酬详情
-              </el-button>
-              <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">
-                修改
-              </el-button>
-              <el-button type="danger" text bg size="small" @click="handleDelete(scope.row)">
-                删除
-              </el-button>
+              <section class="flex items-center">
+                <el-button type="primary" text bg @click="handleUpdate(scope.row)">
+                  修改
+                </el-button>
+                <el-button type="danger" text bg @click="dimission(scope.row)">
+                  离职
+                </el-button>
+                <el-button type="danger" text bg @click="handleDelete(scope.row)" style="margin-right: 10px;">
+                  删除
+                </el-button>
+
+                <el-popover
+                  placement="bottom"
+                  :width="110"
+                  trigger="click"
+                >
+                  <template #default>
+                    <div style="display: flex;align-items: center;flex-direction: column;">
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pointRecord')" style="margin: 0;display: block;">
+                        打卡记录
+                      </el-button>
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'task')" style="margin: 0;display: block;">
+                        任务详情
+                      </el-button>
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'contract')" style="margin: 0;display: block;">
+                        合同详情
+                      </el-button>
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pay')" style="margin: 0;display: block;">
+                        薪酬详情
+                      </el-button>
+                    </div>
+                  </template>
+                  <template #reference>
+                    <span class="flex items-center cursor-pointer">
+                      <span style="color: #fe9739;"> 更多 </span>
+                      <el-icon class="el-icon--right" color="#fe9739">
+                        <ArrowDown />
+                      </el-icon>
+                    </span>
+                  </template>
+                </el-popover>
+              </section>
             </template>
           </el-table-column>
         </el-table>

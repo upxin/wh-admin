@@ -2,7 +2,7 @@ import { request } from "@/http/axios"
 
 export function getByBiz(params: any) {
   return request({
-    url: "/file/file/getByBiz",
+    url: "/file/file/getByBizPage",
     params,
     method: "get"
   })

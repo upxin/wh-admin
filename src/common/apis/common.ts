@@ -38,7 +38,7 @@ export function downTemplate() {
 
 export function getByBiz(params: any) {
   return request({
-    url: "/file/file/getByBiz",
+    url: "/file/file/getByBizPage",
     params,
     method: "get"
   })

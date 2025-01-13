@@ -78,7 +78,16 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/pages/main/disabled/index.vue"),
         name: "Manage",
         meta: {
-          title: "残疾人信息",
+          title: "残疾人员",
+          keepAlive: false
+        }
+      },
+      {
+        path: "dimission",
+        component: () => import("@/pages/main/dimission/index.vue"),
+        name: "Dimission",
+        meta: {
+          title: "离职人员",
           keepAlive: false
         }
       },
@@ -101,70 +110,6 @@ export const constantRoutes: RouteRecordRaw[] = [
           hidden: true
         }
       }
-      // {
-      //   path: "vxe-table",
-      //   component: () => import("@/pages/main/vxe-table/index.vue"),
-      //   name: "VxeTable",
-      //   meta: {
-      //     title: "Vxe Table",
-      //     keepAlive: false
-      //   }
-      // },
-      // {
-      //   path: "level2",
-      //   component: () => import("@/pages/main/level2/index.vue"),
-      //   redirect: "/main/level2/level3",
-      //   name: "Level2",
-      //   meta: {
-      //     title: "二级路由",
-      //     alwaysShow: true
-      //   },
-      //   children: [
-      //     {
-      //       path: "level3",
-      //       component: () => import("@/pages/main/level2/level3/index.vue"),
-      //       name: "Level3",
-      //       meta: {
-      //         title: "三级路由",
-      //         keepAlive: false
-      //       }
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: "composable-main",
-      //   redirect: "/main/composable-main/use-fetch-select",
-      //   name: "ComposableDemo",
-      //   meta: {
-      //     title: "组合式函数"
-      //   },
-      //   children: [
-      //     {
-      //       path: "use-fetch-select",
-      //       component: () => import("@/pages/main/composable-main/use-fetch-select.vue"),
-      //       name: "UseFetchSelect",
-      //       meta: {
-      //         title: "useFetchSelect"
-      //       }
-      //     },
-      //     {
-      //       path: "use-fullscreen-loading",
-      //       component: () => import("@/pages/main/composable-main/use-fullscreen-loading.vue"),
-      //       name: "UseFullscreenLoading",
-      //       meta: {
-      //         title: "useFullscreenLoading"
-      //       }
-      //     },
-      //     {
-      //       path: "use-watermark",
-      //       component: () => import("@/pages/main/composable-main/use-watermark.vue"),
-      //       name: "UseWatermark",
-      //       meta: {
-      //         title: "useWatermark"
-      //       }
-      //     }
-      //   ]
-      // }
     ]
   }
 ]
