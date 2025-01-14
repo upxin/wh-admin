@@ -265,13 +265,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="disabledCard" label="残疾人证" width="220" />
           <el-table-column prop="idCard" label="身份证" width="200" />
           <el-table-column prop="pointAddress" label="打卡地址" />
-          <el-table-column fixed="right" label="操作" width="300">
+          <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="primary" text bg @click="newCompany(scope.row)">
+                <el-button type="primary" @click="newCompany(scope.row)">
                   入职新公司
                 </el-button>
-                <el-button type="primary" text bg @click="_backCompany(scope.row)" style="margin-right: 10px;">
+                <el-button type="success" @click="_backCompany(scope.row)" style="margin-right: 20px;">
                   继续录用
                 </el-button>
                 <!-- <el-button type="danger" text bg @click="handleDelete(scope.row)" style="margin-right: 10px;">

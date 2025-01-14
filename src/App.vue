@@ -15,7 +15,7 @@ initGreyAndColorWeakness()
 </script>
 
 <template>
-  <el-config-provider :locale="zhCn" size="default">
+  <el-config-provider :locale="zhCn" size="large">
     <router-view />
   </el-config-provider>
 </template>

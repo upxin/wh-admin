@@ -49,6 +49,23 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/",
     component: Layouts,
+    redirect: "/statistics",
+    children: [
+      {
+        path: "statistics",
+        component: () => import("@/pages/statistics/index.vue"),
+        name: "Statistics",
+        meta: {
+          title: "数据统计",
+          svgIcon: "chart",
+          affix: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/home",
+    component: Layouts,
     redirect: "/dashboard",
     children: [
       {

@@ -141,13 +141,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column type="selection" width="50" />
           <el-table-column :label="type">
             <template #default="scope">
-              <el-image style="width: 100px;height: 100px;" v-if="getFileType(scope.row.url) === 'image'" :src="scope.row.url" :preview-src-list="[scope.row.url]" />
+              <el-image style="width: 100px;height: 100px;" v-if="getFileType(scope.row.url) === 'image'" :src="scope.row.url" :preview-src-list="[scope.row.url]" :preview-teleported="true" />
               <video v-else controls style="width: 400px;height: 260px;">
                 <source :src="scope.row.url" type="video/mp4">
               </video>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="250">
+          <el-table-column label="操作" width="300">
             <template #default="scope">
               <el-button type="danger" text bg size="small" @click="handleDelete(scope.row)">
                 删除

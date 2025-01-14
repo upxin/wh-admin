@@ -294,16 +294,16 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="pointAddress" label="打卡地址" />
           <el-table-column prop="company" label="所属公司" />
 
-          <el-table-column fixed="right" label="操作" width="300">
+          <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="primary" text bg @click="handleUpdate(scope.row)">
+                <el-button type="primary" @click="handleUpdate(scope.row)">
                   修改
                 </el-button>
-                <el-button type="danger" text bg @click="dimission(scope.row)">
+                <el-button type="danger" @click="dimission(scope.row)">
                   离职
                 </el-button>
-                <el-button type="danger" text bg @click="handleDelete(scope.row)" style="margin-right: 10px;">
+                <el-button type="danger" @click="handleDelete(scope.row)" style="margin-right: 20px;">
                   删除
                 </el-button>
 
