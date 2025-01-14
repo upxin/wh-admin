@@ -85,6 +85,9 @@ function setOpts() {
         name: "Direct",
         type: "bar",
         barWidth: "60%",
+        itemStyle: {
+          color: "#fe9739" // 设置柱状图的颜色为红色
+        },
         data: [10, 52, 200, 334, 390, 330, 220]
       }
     ]
