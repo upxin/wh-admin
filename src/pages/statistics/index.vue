@@ -4,7 +4,8 @@
 import type {
   // 系列类型的定义后缀都为 SeriesOption
   BarSeriesOption,
-  LineSeriesOption
+  LineSeriesOption,
+  PieSeriesOption
 } from "echarts/charts"
 import type {
   DatasetComponentOption,
@@ -14,12 +15,14 @@ import type {
   TooltipComponentOption
 } from "echarts/components"
 import type { ComposeOption, ECharts } from "echarts/core" // 引入 ECharts 类型
+import { userCount } from "@@/apis/statistics/index"
 // 引入柱状图图表，图表后缀都为 Chart
 import { BarChart, PieChart } from "echarts/charts"
 // 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
   DatasetComponent,
   GridComponent,
+  LegendComponent,
   TitleComponent,
   TooltipComponent,
   TransformComponent
@@ -38,9 +41,12 @@ type ECOption = ComposeOption<
   | TooltipComponentOption
   | GridComponentOption
   | DatasetComponentOption
+  | PieSeriesOption
 >
 
 echarts.use([
+  PieChart,
+  LegendComponent,
   TitleComponent,
   TooltipComponent,
   GridComponent,
@@ -52,43 +58,42 @@ echarts.use([
   CanvasRenderer
 ])
 let myChart: ECharts
-function setOpts() {
+function setOpts(data) {
   const option: ECOption = {
+    color: ["#fe9739", "#F56C6C"],
     tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow"
-      }
+      trigger: "item"
     },
-    grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
-      containLabel: true
+    legend: {
+      top: "5%",
+      left: "center"
     },
-    xAxis: [
-      {
-        type: "category",
-        data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-        axisTick: {
-          alignWithLabel: true
-        }
-      }
-    ],
-    yAxis: [
-      {
-        type: "value"
-      }
-    ],
     series: [
       {
-        name: "Direct",
-        type: "bar",
-        barWidth: "60%",
+        name: "",
+        type: "pie",
+        radius: ["40%", "70%"],
+        avoidLabelOverlap: false,
         itemStyle: {
-          color: "#fe9739" // 设置柱状图的颜色为红色
+          borderRadius: 10,
+          borderColor: "#fff",
+          borderWidth: 2
         },
-        data: [10, 52, 200, 334, 390, 330, 220]
+        label: {
+          show: false,
+          position: "center"
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 40,
+            fontWeight: "bold"
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data
       }
     ]
   }
@@ -97,15 +102,112 @@ function setOpts() {
 onMounted(() => {
   nextTick(() => {
     myChart = echarts.init(document.getElementById("main"))
-    setOpts()
   })
 })
+const formInline = reactive({
+  company: "",
+  endDate: "",
+  startDate: "",
+  date: ""
+})
+const tableData1 = ref([])
+const tableData2 = ref([])
+
+function getUserCount() {
+  console.log(formInline)
+  const params = {
+    company: formInline.company,
+    endDate: formInline.date[1],
+    startDate: formInline.date[0]
+  }
+  userCount(params).then((res) => {
+    console.log(res)
+    const data = res.list?.map((item) => {
+      return { ...item, value: item.count }
+    })
+    tableData1.value = res.list1
+    tableData2.value = res.list2
+
+    setOpts(data)
+  })
+}
 </script>
 
 <template>
   <div class="app-container">
     <el-card>
-      <div id="main" style="height: 500px;width:100%;" />
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="所属公司">
+          <el-input v-model="formInline.company" placeholder="输入所属公司" clearable style="width: 240px" />
+        </el-form-item>
+        <el-form-item label="起始时间">
+          <el-date-picker
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            v-model="formInline.date"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="getUserCount">
+            查询
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <div id="main" style="height: 400px;width:100%;" />
     </el-card>
+    <section class="flex">
+      <div class="min-w-600px  flex-1 mr-30px">
+        <h2 class="pt-20px">
+          该期间离职人员
+        </h2>
+        <el-card>
+          <el-table :data="tableData2" height="400">
+            <el-table-column prop="userName" label="用户名" width="120" />
+            <el-table-column prop="sex" label="性别" width="80">
+              <template #default="scope">
+                <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
+                  女
+                </el-tag>
+                <el-tag v-else type="warning" effect="plain" disable-transitions>
+                  男
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="phonenumber" label="手机号" width="200" />
+            <el-table-column prop="leaveDate" label="离职时间" width="200" />
+            <el-table-column prop="company" label="所属公司" />
+          </el-table>
+        </el-card>
+      </div>
+      <div class="min-w-600px flex-1">
+        <h2 class="pt-20px">
+          该期间入职人员
+        </h2>
+        <el-card>
+          <el-table :data="tableData1" height="400">
+            <el-table-column prop="userName" label="用户名" width="120" />
+            <el-table-column prop="sex" label="性别" width="80">
+              <template #default="scope">
+                <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
+                  女
+                </el-tag>
+                <el-tag v-else type="warning" effect="plain" disable-transitions>
+                  男
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="phonenumber" label="手机号" width="200" />
+            <el-table-column prop="employmentDate" label="入职时间" width="200" />
+            <!-- <el-table-column prop="disabledCard" label="残疾人证" width="220" /> -->
+            <el-table-column prop="company" label="所属公司" />
+          </el-table>
+        </el-card>
+      </div>
+    </section>
   </div>
 </template>
