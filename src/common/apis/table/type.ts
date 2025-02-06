@@ -2,11 +2,10 @@ export interface CreateOrUpdateTableRequestData {
   company: string
   idCard: string
   phonenumber: string
-  pointAddress: string
   sex: string
   userName: string
   id: string
-  employmentDate:string
+  employmentDate: string
   disabledCard: string
 }
 
@@ -26,13 +25,12 @@ export interface TableData {
   id: string
   idCard: string
   phonenumber: string
-  pointAddress: string
   sex: string
   userName: string
   updateTime: string
 }
 
-export type TableResponseData = {
+export interface TableResponseData {
   rows: TableData[]
   total: number
 }

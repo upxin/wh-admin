@@ -69,13 +69,13 @@ export const constantRoutes: RouteRecordRaw[] = [
     redirect: "/dashboard",
     children: [
       {
-        path: "dashboard",
-        component: () => import("@/pages/dashboard/index.vue"),
-        name: "Dashboard",
+        path: "/user",
+        component: () => import("@/pages/main/user/index.vue"),
+        name: "User",
         meta: {
-          title: "Banner管理",
-          svgIcon: "dashboard",
-          affix: true
+          title: "用户管理",
+          svgIcon: "user",
+          keepAlive: false
         }
       }
     ]
@@ -86,7 +86,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     redirect: "/main/disabled",
     name: "Demo",
     meta: {
-      title: "人员管理",
+      title: "残疾人管理",
       elIcon: "DataBoard"
     },
     children: [
@@ -105,15 +105,6 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "Dimission",
         meta: {
           title: "离职人员",
-          keepAlive: false
-        }
-      },
-      {
-        path: "user",
-        component: () => import("@/pages/main/user/index.vue"),
-        name: "User",
-        meta: {
-          title: "用户管理",
           keepAlive: false
         }
       },

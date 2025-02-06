@@ -24,17 +24,15 @@ const formData = ref<CreateOrUpdateTableRequestData>({
   company: "",
   idCard: "",
   phonenumber: "",
-  pointAddress: "",
   sex: "",
   userName: "",
   disabledCard: "",
   employmentDate: ""
 })
 const formRules: FormRules<CreateOrUpdateTableRequestData> = {
-  userName: [{ required: true, trigger: "blur", message: "请输入用户名" }],
+  userName: [{ required: true, trigger: "blur", message: "请输入姓名" }],
   phonenumber: [{ required: true, trigger: "blur", message: "请输入手机" }],
   idCard: [{ required: true, trigger: "blur", message: "请输入身份证" }],
-  pointAddress: [{ required: true, trigger: "blur", message: "请输入打卡地址" }],
   disabledCard: [{ required: true, trigger: "blur", message: "请输入残疾人证" }],
   employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间入" }],
   sex: [{ required: true, trigger: "blur", message: "请选择性别" }],
@@ -64,7 +62,6 @@ function resetForm() {
     company: "",
     idCard: "",
     phonenumber: "",
-    pointAddress: "",
     sex: "",
     userName: "",
     disabledCard: ""
@@ -165,7 +162,6 @@ function newCompany(row: TableData) {
   formData.value = cloneDeep(row)
   formData.value.company = ""
   formData.value.employmentDate = ""
-  formData.value.pointAddress = ""
 }
 async function getExcel(response: Blob) {
   try {
@@ -231,7 +227,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="phonenumber" label="手机号">
           <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable />
         </el-form-item>
-        <el-form-item prop="userName" label="用户名">
+        <el-form-item prop="userName" label="姓名">
           <el-input v-model="searchData.userName" placeholder="请输入" clearable />
         </el-form-item>
         <el-form-item>
@@ -248,7 +244,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" />
-          <el-table-column prop="userName" label="用户名" width="120" />
+          <el-table-column prop="userName" label="姓名" width="120" />
           <el-table-column prop="sex" label="性别" width="120">
             <template #default="scope">
               <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
@@ -263,8 +259,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="employmentDate" label="入职时间" width="200" />
           <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
           <el-table-column prop="disabledCard" label="残疾人证" width="220" />
-          <el-table-column prop="idCard" label="身份证" width="200" />
-          <el-table-column prop="pointAddress" label="打卡地址" />
+          <el-table-column prop="idCard" label="身份证" />
+          <el-table-column prop="company" label="所属公司" />
+
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
               <section class="flex items-center">
@@ -324,8 +321,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     <!-- 新增/修改 -->
     <el-dialog v-model="dialogVisible" title="信息录入" width="500px" @closed="resetForm">
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="right">
-        <el-form-item prop="userName" label="用户名">
-          <el-input v-model="formData.userName" placeholder="请输入用户名" />
+        <el-form-item prop="userName" label="姓名">
+          <el-input v-model="formData.userName" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item prop="idCard" label="身份证">
           <el-input v-model="formData.idCard" placeholder="请输入身份证" />
@@ -335,9 +332,6 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-form-item>
         <el-form-item prop="phonenumber" label="手机号">
           <el-input v-model="formData.phonenumber" placeholder="请输入手机号" />
-        </el-form-item>
-        <el-form-item prop="pointAddress" label="打卡地址">
-          <el-input v-model="formData.pointAddress" placeholder="请输入打卡地址" />
         </el-form-item>
         <el-form-item prop="company" label="公司">
           <el-input v-model="formData.company" placeholder="请输入公司" />
