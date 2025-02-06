@@ -32,7 +32,7 @@ const formData = ref<CreateOrUpdateTableRequestData>({
 const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   userName: [{ required: true, trigger: "blur", message: "请输入姓名" }],
   phonenumber: [{ required: true, trigger: "blur", message: "请输入手机" }],
-  idCard: [{ required: true, trigger: "blur", message: "请输入身份证" }],
+  idCard: [{ required: true, trigger: "blur", message: "请输入身份证号码" }],
   disabledCard: [{ required: true, trigger: "blur", message: "请输入残疾人证" }],
   employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间入" }],
   sex: [{ required: true, trigger: "blur", message: "请选择性别" }],
@@ -256,10 +256,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
             </template>
           </el-table-column>
           <el-table-column prop="phonenumber" label="手机号" width="200" />
+          <el-table-column prop="idCard" label="身份证号码" width="200" />
+          <el-table-column prop="disabledCard" label="残人证号码" width="220" />
           <el-table-column prop="employmentDate" label="入职时间" width="200" />
           <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
-          <el-table-column prop="disabledCard" label="残疾人证" width="220" />
-          <el-table-column prop="idCard" label="身份证" />
+
           <el-table-column prop="company" label="所属公司" />
 
           <el-table-column fixed="right" label="操作" width="340">
@@ -324,8 +325,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="formData.userName" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item prop="idCard" label="身份证">
-          <el-input v-model="formData.idCard" placeholder="请输入身份证" />
+        <el-form-item prop="idCard" label="身份证号码">
+          <el-input v-model="formData.idCard" placeholder="请输入身份证号码" />
         </el-form-item>
         <el-form-item prop="disabledCard" label="残疾人证">
           <el-input v-model="formData.disabledCard" placeholder="请输入残疾人证" />
