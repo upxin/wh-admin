@@ -33,10 +33,10 @@ const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   userName: [{ required: true, trigger: "blur", message: "请输入姓名" }],
   phonenumber: [{ required: true, trigger: "blur", message: "请输入手机" }],
   idCard: [{ required: true, trigger: "blur", message: "请输入身份证号码" }],
-  disabledCard: [{ required: true, trigger: "blur", message: "请输入残疾人证" }],
-  employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间入" }],
+  disabledCard: [{ required: true, trigger: "blur", message: "请输入残疾证号码" }],
+  employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间" }],
   sex: [{ required: true, trigger: "blur", message: "请选择性别" }],
-  company: [{ required: true, trigger: "blur", message: "请输入公司" }]
+  company: [{ required: true, trigger: "blur", message: "请输入所属公司" }]
 }
 function handleCreateOrUpdate() {
   formRef.value?.validate((valid) => {
@@ -261,7 +261,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="employmentDate" label="入职时间" width="120" />
           <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
 
-          <el-table-column prop="company" label="所属公司" width="220" />
+          <el-table-column prop="company" label="所属公司" width="280" />
 
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
@@ -275,23 +275,31 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
                 <!-- <el-button type="danger" text bg @click="handleDelete(scope.row)" style="margin-right: 10px;">
                   删除
                 </el-button> -->
-                <el-popover
-                  placement="bottom"
-                  :width="110"
-                  trigger="click"
-                >
+                <el-popover placement="bottom" :width="110" trigger="click">
                   <template #default>
                     <div style="display: flex;align-items: center;flex-direction: column;">
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pointRecord')" style="margin: 0;display: block;">
+                      <el-button
+                        type="primary" :text="true" @click="handleDetail(scope.row, 'pointRecord')"
+                        style="margin: 0;display: block;"
+                      >
                         打卡记录
                       </el-button>
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'task')" style="margin: 0;display: block;">
+                      <el-button
+                        type="primary" :text="true" @click="handleDetail(scope.row, 'task')"
+                        style="margin: 0;display: block;"
+                      >
                         任务详情
                       </el-button>
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'contract')" style="margin: 0;display: block;">
+                      <el-button
+                        type="primary" :text="true" @click="handleDetail(scope.row, 'contract')"
+                        style="margin: 0;display: block;"
+                      >
                         合同详情
                       </el-button>
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pay')" style="margin: 0;display: block;">
+                      <el-button
+                        type="primary" :text="true" @click="handleDetail(scope.row, 'pay')"
+                        style="margin: 0;display: block;"
+                      >
                         薪酬详情
                       </el-button>
                     </div>
@@ -325,18 +333,6 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="formData.userName" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item prop="idCard" label="身份证号码">
-          <el-input v-model="formData.idCard" placeholder="请输入身份证号码" />
-        </el-form-item>
-        <el-form-item prop="disabledCard" label="残疾人证">
-          <el-input v-model="formData.disabledCard" placeholder="请输入残疾人证" />
-        </el-form-item>
-        <el-form-item prop="phonenumber" label="手机号">
-          <el-input v-model="formData.phonenumber" placeholder="请输入手机号" />
-        </el-form-item>
-        <el-form-item prop="company" label="公司">
-          <el-input v-model="formData.company" placeholder="请输入公司" />
-        </el-form-item>
         <el-form-item prop="sex" label="性别">
           <el-radio-group v-model="formData.sex">
             <el-radio value="1">
@@ -347,11 +343,23 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
             </el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item prop="phonenumber" label="手机号">
+          <el-input v-model="formData.phonenumber" placeholder="请输入手机号" />
+        </el-form-item>
+        <el-form-item prop="idCard" label="身份证号码">
+          <el-input v-model="formData.idCard" placeholder="请输入身份证号码" />
+        </el-form-item>
+        <el-form-item prop="disabledCard" label="残疾证号码">
+          <el-input v-model="formData.disabledCard" placeholder="请输入残疾证号码" />
+        </el-form-item>
         <el-form-item prop="employmentDate" label="入职时间">
           <el-date-picker
-            v-model="formData.employmentDate" type="date" value-format="YYYY-MM-DD" format="YYYY-MM-DD"
-            placeholder="请选择入职时间"
+            style="width: 100%;" v-model="formData.employmentDate" type="date" value-format="YYYY-MM-DD"
+            format="YYYY-MM-DD" placeholder="请选择入职时间"
           />
+        </el-form-item>
+        <el-form-item prop="company" label="所属公司">
+          <el-input v-model="formData.company" placeholder="请输入所属公司" />
         </el-form-item>
       </el-form>
       <template #footer>
