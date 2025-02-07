@@ -255,13 +255,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="phonenumber" label="手机号" width="200" />
+          <el-table-column prop="phonenumber" label="手机号" width="140" />
           <el-table-column prop="idCard" label="身份证号码" width="200" />
-          <el-table-column prop="disabledCard" label="残人证号码" width="220" />
-          <el-table-column prop="employmentDate" label="入职时间" width="200" />
+          <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
+          <el-table-column prop="employmentDate" label="入职时间" width="120" />
           <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
 
-          <el-table-column prop="company" label="所属公司" />
+          <el-table-column prop="company" label="所属公司" width="220" />
 
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
