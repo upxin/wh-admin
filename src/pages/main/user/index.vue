@@ -214,10 +214,10 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getUser
           <el-table-column prop="roleName" label="角色" />
           <el-table-column fixed="right" label="操作" width="180">
             <template #default="scope">
-              <el-button type="primary" @click="handleUpdate(scope.row)">
+              <el-button type="primary" :size="'small'" @click="handleUpdate(scope.row)">
                 修改
               </el-button>
-              <el-button type="danger" @click="handleDelete(scope.row)">
+              <el-button type="danger" :size="'small'" @click="handleDelete(scope.row)">
                 删除
               </el-button>
             </template>
