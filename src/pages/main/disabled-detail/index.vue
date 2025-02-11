@@ -151,7 +151,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="pointAddressReal" label="打卡地点"></el-table-column>
           <el-table-column label="操作" width="300">
             <template #default="scope">
-              <el-button type="danger" size="small" @click="handleDelete(scope.row)">
+              <el-button type="danger" @click="handleDelete(scope.row)">
                 删除
               </el-button>
             </template>
@@ -160,7 +160,6 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
       <div class="pager-wrapper">
         <el-pagination
-        :size="'small'"
           background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
           :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
           @size-change="handleSizeChange" @current-change="handleCurrentChange"

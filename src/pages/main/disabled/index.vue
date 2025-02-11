@@ -280,13 +280,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="primary"  size="small" @click="handleUpdate(scope.row)">
+                <el-button type="primary" @click="handleUpdate(scope.row)">
                   修改
                 </el-button>
-                <el-button type="danger"  size="small" @click="dimission(scope.row)">
+                <el-button type="danger"  @click="dimission(scope.row)">
                   离职
                 </el-button>
-                <el-button type="danger"  size="small" @click="handleDelete(scope.row)" style="margin-right: 20px;">
+                <el-button type="danger"  @click="handleDelete(scope.row)" style="margin-right: 20px;">
                   删除
                 </el-button>
 
@@ -327,7 +327,6 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
       <div class="pager-wrapper">
         <el-pagination
-        :size="'small'"
           background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
           :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
           @size-change="handleSizeChange" @current-change="handleCurrentChange"
