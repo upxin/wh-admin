@@ -305,6 +305,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
       <div class="pager-wrapper">
         <el-pagination
+        :size="'small'"
           background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
           :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
           @size-change="handleSizeChange" @current-change="handleCurrentChange"
