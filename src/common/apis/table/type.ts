@@ -2,7 +2,6 @@ export interface CreateOrUpdateTableRequestData {
   company: string
   idCard: string
   phonenumber: string
-  sex: string
   userName: string
   id: string
   employmentDate: string
@@ -25,7 +24,6 @@ export interface TableData {
   id: string
   idCard: string
   phonenumber: string
-  sex: string
   userName: string
   updateTime: string
 }

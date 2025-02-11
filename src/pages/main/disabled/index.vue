@@ -23,7 +23,6 @@ const formData = ref<CreateOrUpdateTableRequestData>({
   company: "",
   idCard: "",
   phonenumber: "",
-  sex: "",
   userName: "",
   disabledCard: "",
   employmentDate: ""
@@ -34,7 +33,6 @@ const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   idCard: [{ required: true, trigger: "blur", message: "请输入身份证号码" }],
   disabledCard: [{ required: true, trigger: "blur", message: "请输入残疾证号码" }],
   employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间" }],
-  sex: [{ required: true, trigger: "blur", message: "请选择性别" }],
   company: [{ required: true, trigger: "blur", message: "请输入所属公司" }]
 }
 function handleCreateOrUpdate() {
@@ -62,7 +60,6 @@ function resetForm() {
     company: "",
     idCard: "",
     phonenumber: "",
-    sex: "",
     userName: "",
     disabledCard: ""
   }
@@ -273,35 +270,23 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" />
-          <el-table-column prop="userName" label="姓名" width="120" />
-          <el-table-column prop="sex" label="性别" width="120">
-            <template #default="scope">
-              <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
-                女
-              </el-tag>
-              <el-tag v-else type="warning" effect="plain" disable-transitions>
-                男
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="phonenumber" label="手机号" width="140" />
-          <el-table-column prop="idCard" label="身份证号码" width="200" />
+          <el-table-column prop="userName" label="姓名" width="90" />
+          <el-table-column prop="phonenumber" label="手机号" width="120" />
+          <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
-          <el-table-column prop="employmentDate" label="入职时间" width="120" />
-          <!-- <el-table-column prop="createTime" label="创建时间"  width="200" /> -->
-
-          <el-table-column prop="company" label="所属公司" width="280" />
+          <el-table-column prop="employmentDate" label="入职时间" width="110" />
+          <el-table-column prop="company" label="所属公司" />
 
           <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="primary" @click="handleUpdate(scope.row)">
+                <el-button type="primary"  size="small" @click="handleUpdate(scope.row)">
                   修改
                 </el-button>
-                <el-button type="danger" @click="dimission(scope.row)">
+                <el-button type="danger"  size="small" @click="dimission(scope.row)">
                   离职
                 </el-button>
-                <el-button type="danger" @click="handleDelete(scope.row)" style="margin-right: 20px;">
+                <el-button type="danger"  size="small" @click="handleDelete(scope.row)" style="margin-right: 20px;">
                   删除
                 </el-button>
 
@@ -354,7 +339,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="formData.userName" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item prop="sex" label="性别">
+        <!-- <el-form-item prop="sex" label="性别">
           <el-radio-group v-model="formData.sex">
             <el-radio value="1">
               男
@@ -363,7 +348,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               女
             </el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item prop="phonenumber" label="手机号">
           <el-input v-model="formData.phonenumber" placeholder="请输入手机号" />
         </el-form-item>

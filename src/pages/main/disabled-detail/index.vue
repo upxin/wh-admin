@@ -147,9 +147,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               </video>
             </template>
           </el-table-column>
+          <el-table-column prop="pointTime" label="打卡时间"></el-table-column>
+          <el-table-column prop="pointAddressReal" label="打卡地点"></el-table-column>
           <el-table-column label="操作" width="300">
             <template #default="scope">
-              <el-button type="danger" text bg size="small" @click="handleDelete(scope.row)">
+              <el-button type="danger" size="small" @click="handleDelete(scope.row)">
                 删除
               </el-button>
             </template>

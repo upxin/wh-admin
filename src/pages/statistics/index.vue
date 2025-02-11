@@ -168,18 +168,8 @@ function getUserCount() {
         <el-card>
           <el-table :data="tableData2" height="400">
             <el-table-column prop="userName" label="用户名" width="120" />
-            <el-table-column prop="sex" label="性别" width="80">
-              <template #default="scope">
-                <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
-                  女
-                </el-tag>
-                <el-tag v-else type="warning" effect="plain" disable-transitions>
-                  男
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="phonenumber" label="手机号" width="200" />
-            <el-table-column prop="leaveDate" label="离职时间" width="200" />
+            <el-table-column prop="phonenumber" label="手机号" width="140" />
+            <el-table-column prop="leaveDate" label="离职时间" width="140" />
             <el-table-column prop="company" label="所属公司" />
           </el-table>
         </el-card>
@@ -191,18 +181,8 @@ function getUserCount() {
         <el-card>
           <el-table :data="tableData1" height="400">
             <el-table-column prop="userName" label="用户名" width="120" />
-            <el-table-column prop="sex" label="性别" width="80">
-              <template #default="scope">
-                <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
-                  女
-                </el-tag>
-                <el-tag v-else type="warning" effect="plain" disable-transitions>
-                  男
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="phonenumber" label="手机号" width="200" />
-            <el-table-column prop="employmentDate" label="入职时间" width="200" />
+            <el-table-column prop="phonenumber" label="手机号" width="140" />
+            <el-table-column prop="employmentDate" label="入职时间" width="140" />
             <!-- <el-table-column prop="disabledCard" label="残疾人证" width="220" /> -->
             <el-table-column prop="company" label="所属公司" />
           </el-table>
