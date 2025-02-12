@@ -111,11 +111,12 @@ function update(row: TableData) {
   dialogVisible.value = true
   formData.value = cloneDeep(row)
 }
-
+let orderBy ={}
 const tableData = ref<TableData[]>([])
 const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
   userName: "",
+  company: '',
   phonenumber: ""
 })
 function getTableData() {
@@ -130,6 +131,13 @@ function getTableData() {
   }
   if (searchData.phonenumber) {
     Reflect.set(opts, "phonenumber", searchData.phonenumber)
+  }
+  if (searchData.company) {
+    Reflect.set(opts, "company", searchData.company)
+  }
+
+  if (orderBy) {
+    Object.assign(opts, orderBy)
   }
 
   getTableDataApi(opts).then((res) => {
@@ -213,6 +221,20 @@ function handleDetail(row, bizType) {
     }
   })
 }
+function camelToSnakeCase(str: string) {
+  return str.replace(/([A-Z])/g, '_$1').toLowerCase();
+}
+
+function removeLastSixChars(str: string) {
+  if (str.length <= 6) {
+    return ''; // 如果字符串长度小于或等于6，返回空字符串
+  }
+  return str.slice(0, -6);
+}
+function sortChange({ prop, order }: { prop: string, order: string }) {
+  orderBy = { orderBy: camelToSnakeCase(prop) + " " + removeLastSixChars(order) }
+  getTableData()
+}
 // 监听分页参数的变化
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
 </script>
@@ -227,6 +249,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="searchData.userName" placeholder="请输入" clearable />
         </el-form-item>
+        <el-form-item prop="userName" label="所属公司">
+          <el-input v-model="searchData.company" placeholder="请输入" clearable />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">
             查询
@@ -239,16 +264,16 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     </el-card>
     <el-card v-loading="loading" shadow="never">
       <div class="table-wrapper">
-        <el-table :data="tableData" @selection-change="handleSelectionChange">
+        <el-table :data="tableData" @selection-change="handleSelectionChange" @sort-change="sortChange">
           <el-table-column type="selection" width="50" />
           <el-table-column prop="userName" label="姓名" width="90" />
           <el-table-column prop="phonenumber" label="手机号" width="120" />
           <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
-          <el-table-column prop="employmentDate" label="入职时间" width="110" />
-          <el-table-column prop="leaveDate" label="离职时间" width="110" />
+          <el-table-column prop="employmentDate" label="入职时间" width="110" sortable="custom" />
+          <el-table-column prop="leaveDate" label="离职时间" width="110" sortable="custom" />
 
-          <el-table-column prop="company" label="所属公司" />
+          <el-table-column prop="company" label="所属公司" sortable="custom" />
 
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
