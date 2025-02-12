@@ -246,6 +246,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
           <el-table-column prop="employmentDate" label="入职时间" width="110" />
+          <el-table-column prop="leaveDate" label="离职时间" width="110" />
+
           <el-table-column prop="company" label="所属公司" />
 
           <el-table-column fixed="right" label="操作" width="340">

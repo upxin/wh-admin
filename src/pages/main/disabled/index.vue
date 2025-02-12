@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/type"
-import type { FormInstance, FormRules } from "element-plus"
+import type { FormInstance, FormRules, } from "element-plus"
+import { ElDatePicker } from 'element-plus'
 import { downTemplate, uploadFile } from "@@/apis/common"
 import { createTableDataApi, deleteTableDataApi, disabledUserLeave, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
 import { ArrowDown, Refresh, Search } from "@element-plus/icons-vue"
 import { cloneDeep } from "lodash-es"
+import 'element-plus/theme-chalk/el-date-picker.css';
 
 defineOptions({
   // 命名当前组件
@@ -14,7 +16,7 @@ defineOptions({
 const router = useRouter()
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
-
+let orderBy = {}
 const fileList = ref([])
 const dialogVisible = ref<boolean>(false)
 const formRef = ref<FormInstance | null>(null)
@@ -80,15 +82,44 @@ function handleDelete(row: TableData) {
   })
 }
 function dimission(row: TableData) {
-  ElMessageBox.confirm(`确认离职该职工吗：${row.userName}？`, "提示", {
+  const selectedDate = ref<string>('') // 定义在函数内部
+  ElMessageBox({
     confirmButtonText: "确定",
     cancelButtonText: "取消",
-    type: "warning"
-  }).then(() => {
-    disabledUserLeave(row.id).then(() => {
-      ElMessage.success("离职成功")
-      getTableData()
-    })
+    showCancelButton: true,
+    showClose: true,
+    closeOnClickModal: false,
+    title: '请选择离职时间',
+    message: () =>
+      h(ElDatePicker, {
+        modelValue: selectedDate.value,
+        'onUpdate:modelValue': (val: string) => {
+          selectedDate.value = val
+        },
+        format: 'YYYY-MM-DD',
+        valueFormat: 'YYYY-MM-DD',
+        type: 'date',
+        placeholder: '离职时间',
+      }),
+    beforeClose: (action, instance, done) => {
+      if (action === 'confirm') {
+        if (!selectedDate.value) {
+          ElMessage.warning('请选择离职时间')
+        } else {
+          try {
+            disabledUserLeave(row.id, selectedDate.value).then(() => {
+              ElMessage.success("离职成功")
+              getTableData()
+            })
+            done(); // 关闭对话框
+          } catch (error) {
+            ElMessage.error('操作失败');
+          }
+        }
+      } else {
+        done()
+      }
+    }
   })
 }
 function delMultiple() {
@@ -120,7 +151,8 @@ const tableData = ref<TableData[]>([])
 const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
   userName: "",
-  phonenumber: ""
+  phonenumber: "",
+  company: ''
 })
 function getTableData() {
   loading.value = true
@@ -135,9 +167,15 @@ function getTableData() {
   if (searchData.phonenumber) {
     Reflect.set(opts, "phonenumber", searchData.phonenumber)
   }
+  if (searchData.company) {
+    Reflect.set(opts, "company", searchData.company)
+  }
+
+  if (orderBy) {
+    Object.assign(opts, orderBy)
+  }
 
   getTableDataApi(opts).then((res) => {
-    console.log(res, 12345)
     paginationData.total = res.total
     tableData.value = res.rows
   }).catch(() => {
@@ -217,8 +255,25 @@ function handleDetail(row, bizType) {
     }
   })
 }
+
+function camelToSnakeCase(str: string) {
+  return str.replace(/([A-Z])/g, '_$1').toLowerCase();
+}
+
+function removeLastSixChars(str: string) {
+  if (str.length <= 6) {
+    return ''; // 如果字符串长度小于或等于6，返回空字符串
+  }
+  return str.slice(0, -6);
+}
+
+
+function sortChange({ prop, order }: { prop: string, order: string }) {
+  orderBy = { orderBy: camelToSnakeCase(prop) + " " + removeLastSixChars(order) }
+  getTableData()
+}
 // 监听分页参数的变化
-watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
+watch([() => paginationData.currentPage, () => paginationData.pageSize], () => { getTableData() }, { immediate: true })
 </script>
 
 <template>
@@ -230,6 +285,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-form-item>
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="searchData.userName" placeholder="请输入" clearable />
+        </el-form-item>
+        <el-form-item prop="userName" label="所属公司">
+          <el-input v-model="searchData.company" placeholder="请输入" clearable />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">
@@ -244,10 +302,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
         <div flex>
-          <el-upload
-            v-model:file-list="fileList" action="" multiple :limit="3" :http-request="customUpload"
-            class="mr-10px" accept=".xlsx,.xls"
-          >
+          <el-upload v-model:file-list="fileList" action="" multiple :limit="3" :http-request="customUpload"
+            class="mr-10px" accept=".xlsx,.xls">
             <el-button type="primary">
               批量导入
             </el-button>
@@ -268,14 +324,14 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </div>
       </div>
       <div class="table-wrapper">
-        <el-table :data="tableData" @selection-change="handleSelectionChange">
+        <el-table :data="tableData" @selection-change="handleSelectionChange" @sort-change="sortChange">
           <el-table-column type="selection" width="50" />
           <el-table-column prop="userName" label="姓名" width="90" />
           <el-table-column prop="phonenumber" label="手机号" width="120" />
           <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
-          <el-table-column prop="employmentDate" label="入职时间" width="110" />
-          <el-table-column prop="company" label="所属公司" />
+          <el-table-column prop="employmentDate" label="入职时间" width="110" sortable="custom" />
+          <el-table-column prop="company" label="所属公司" sortable="custom" />
 
           <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">
@@ -283,30 +339,30 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
                 <el-button type="primary" @click="handleUpdate(scope.row)">
                   修改
                 </el-button>
-                <el-button type="danger"  @click="dimission(scope.row)">
+                <el-button type="danger" @click="dimission(scope.row)">
                   离职
                 </el-button>
-                <el-button type="danger"  @click="handleDelete(scope.row)" style="margin-right: 20px;">
+                <el-button type="danger" @click="handleDelete(scope.row)" style="margin-right: 20px;">
                   删除
                 </el-button>
 
-                <el-popover
-                  placement="bottom"
-                  :width="110"
-                  trigger="click"
-                >
+                <el-popover placement="bottom" :width="110" trigger="click">
                   <template #default>
                     <div style="display: flex;align-items: center;flex-direction: column;">
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pointRecord')" style="margin: 0;display: block;">
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pointRecord')"
+                        style="margin: 0;display: block;">
                         打卡记录
                       </el-button>
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'task')" style="margin: 0;display: block;">
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'task')"
+                        style="margin: 0;display: block;">
                         任务详情
                       </el-button>
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'contract')" style="margin: 0;display: block;">
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'contract')"
+                        style="margin: 0;display: block;">
                         合同详情
                       </el-button>
-                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pay')" style="margin: 0;display: block;">
+                      <el-button type="primary" :text="true" @click="handleDetail(scope.row, 'pay')"
+                        style="margin: 0;display: block;">
                         薪酬详情
                       </el-button>
                     </div>
@@ -326,11 +382,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-table>
       </div>
       <div class="pager-wrapper">
-        <el-pagination
-          background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
+        <el-pagination background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
           :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
-          @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        />
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </el-card>
     <!-- 新增/修改 -->
@@ -359,10 +413,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-input v-model="formData.disabledCard" placeholder="请输入残疾证号码" />
         </el-form-item>
         <el-form-item prop="employmentDate" label="入职时间">
-          <el-date-picker
-            v-model="formData.employmentDate" style="width: 100%;" type="date" value-format="YYYY-MM-DD" format="YYYY-MM-DD"
-            placeholder="请选择入职时间"
-          />
+          <el-date-picker v-model="formData.employmentDate" style="width: 100%;" type="date" value-format="YYYY-MM-DD"
+            format="YYYY-MM-DD" placeholder="请选择入职时间" />
         </el-form-item>
         <el-form-item prop="company" label="所属公司">
           <el-input v-model="formData.company" placeholder="请输入所属公司" />

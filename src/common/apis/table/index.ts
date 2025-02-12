@@ -49,10 +49,10 @@ export function getMan(params) {
   })
 }
 
-export function disabledUserLeave(id: string) {
+export function disabledUserLeave(id: string, leaveDate:string) {
   return request<any>({
     url: "/system/disabledUser/leave",
     method: "get",
-    params: { id }
+    params: { id ,leaveDate }
   })
 }

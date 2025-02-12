@@ -158,7 +158,9 @@ function getUserCount() {
           </el-button>
         </el-form-item>
       </el-form>
-      <div id="main" style="height: 400px;width:100%;" />
+      <div class="w-full flex justify-center">
+        <div id="main" style="height: 400px;width:600px;" />
+      </div>
     </el-card>
     <section class="flex">
       <div class="min-w-600px  flex-1 mr-30px">
