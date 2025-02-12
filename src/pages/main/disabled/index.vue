@@ -281,13 +281,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
     <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData" label-position="right">
         <el-form-item prop="phonenumber" label="手机号">
-          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable />
+          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable style="width: 220px;"/>
         </el-form-item>
         <el-form-item prop="userName" label="姓名">
-          <el-input v-model="searchData.userName" placeholder="请输入" clearable />
+          <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;"/>
         </el-form-item>
         <el-form-item prop="userName" label="所属公司">
-          <el-input v-model="searchData.company" placeholder="请输入" clearable />
+          <el-input v-model="searchData.company" placeholder="请输入" clearable style="width: 220px;"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">
