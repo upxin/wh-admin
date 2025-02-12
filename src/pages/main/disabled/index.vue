@@ -10,8 +10,8 @@ import { cloneDeep } from "lodash-es"
 import 'element-plus/theme-chalk/el-date-picker.css';
 
 defineOptions({
-  // 命名当前组件
-  name: "ElementPlus"
+  // 命名当前组件  否则keep-alive缓存不生效
+  name: "Disabled"
 })
 const router = useRouter()
 const loading = ref<boolean>(false)

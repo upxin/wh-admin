@@ -93,10 +93,10 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: "disabled",
         component: () => import("@/pages/main/disabled/index.vue"),
-        name: "Manage",
+        name: "Disabled",
         meta: {
           title: "残疾人员",
-          keepAlive: false
+          keepAlive: true
         }
       },
       {
