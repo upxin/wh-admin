@@ -96,7 +96,7 @@ function handleDelete(row: TableData) {
 function delMultiple() {
   const names = multipleSelection.value.map(item => item.userName).join(",")
   const ids = multipleSelection.value.map(item => item.userId)
-
+  if(!ids.length) return ElMessage.warning("请选择数据")
   ElMessageBox.confirm(`正在删除用户：${names}，确认删除？`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",

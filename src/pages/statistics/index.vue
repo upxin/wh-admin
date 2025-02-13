@@ -141,16 +141,8 @@ function getUserCount() {
           <el-input v-model="formInline.company" placeholder="输入所属公司" clearable style="width: 240px" />
         </el-form-item>
         <el-form-item label="起始时间">
-          <el-date-picker
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            v-model="formInline.date"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            clearable
-          />
+          <el-date-picker format="YYYY-MM-DD" value-format="YYYY-MM-DD" v-model="formInline.date" type="daterange"
+            range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" clearable />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getUserCount">
@@ -172,7 +164,9 @@ function getUserCount() {
             <el-table-column prop="userName" label="用户名" width="120" />
             <el-table-column prop="phonenumber" label="手机号" width="140" />
             <el-table-column prop="leaveDate" label="离职时间" width="140" />
-            <el-table-column prop="company" label="所属公司" />
+            <el-table-column prop="company" label="所属公司" width="340" />
+            <el-table-column />
+            <!-- <el-table-column fixed="right" width="1"/> -->
           </el-table>
         </el-card>
       </div>
@@ -186,7 +180,9 @@ function getUserCount() {
             <el-table-column prop="phonenumber" label="手机号" width="140" />
             <el-table-column prop="employmentDate" label="入职时间" width="140" />
             <!-- <el-table-column prop="disabledCard" label="残疾人证" width="220" /> -->
-            <el-table-column prop="company" label="所属公司" />
+            <el-table-column prop="company" label="所属公司" width="340" />
+            <el-table-column />
+            <!-- <el-table-column fixed="right" width="1"/> -->
           </el-table>
         </el-card>
       </div>

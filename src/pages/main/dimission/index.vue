@@ -273,7 +273,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="employmentDate" label="入职时间" width="110" sortable="custom" />
           <el-table-column prop="leaveDate" label="离职时间" width="110" sortable="custom" />
 
-          <el-table-column prop="company" label="所属公司" sortable="custom" />
+          <el-table-column prop="company" label="所属公司" sortable="custom"  width="300"/>
+          <el-table-column />
+
 
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">

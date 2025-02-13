@@ -125,6 +125,8 @@ function dimission(row: TableData) {
 function delMultiple() {
   const names = multipleSelection.value.map(item => item.userName).join(",")
   const ids = multipleSelection.value.map(item => item.id)
+      
+  if(!ids.length) return ElMessage.warning("请选择数据")
 
   ElMessageBox.confirm(`正在删除用户：${names}，确认删除？`, "提示", {
     confirmButtonText: "确定",
@@ -331,7 +333,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
           <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
           <el-table-column prop="employmentDate" label="入职时间" width="110" sortable="custom" />
-          <el-table-column prop="company" label="所属公司" sortable="custom" />
+          <el-table-column prop="company" label="所属公司" sortable="custom"  width="300"/>
+          <el-table-column />
+
 
           <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">

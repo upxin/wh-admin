@@ -40,7 +40,7 @@ function handleDelete(row: TableData) {
 function delMultiple() {
   const createTimes = multipleSelection.value.map(item => item.createTime).join(",")
   const ids = multipleSelection.value.map(item => item.id)
-  if (!ids.length) return ElMessage.error("请选择")
+  if(!ids.length) return ElMessage.warning("请选择数据")
   ElMessageBox.confirm(`正在删除打卡记录：${createTimes}，确认删除？`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",

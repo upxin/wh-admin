@@ -36,14 +36,13 @@ watchEffect(() => {
 <template>
   <div>
     <!-- 左侧模式 -->
-    <LeftMode v-if="isLeft || isMobile" />
+    <LeftMode />
     <!-- 顶部模式 -->
-    <TopMode v-else-if="isTop" />
+    <!-- <TopMode /> -->
     <!-- 混合模式 -->
-    <LeftTopMode v-else-if="isLeftTop" />
-    <!-- 右侧设置面板 -->
-    <RightPanel v-if="showSettings">
+    <!-- <LeftTopMode /> -->
+    <!-- <RightPanel v-if="showSettings">
       <Settings />
-    </RightPanel>
+    </RightPanel> -->
   </div>
 </template>
