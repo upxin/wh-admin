@@ -302,6 +302,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
         </el-form-item>
       </el-form>
     </el-card>
+
     <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
         <div flex>
@@ -343,9 +344,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
               </el-tooltip>
             </template>
           </el-table-column>
-
           <el-table-column />
-
           <el-table-column fixed="right" label="操作" width="360">
             <template #default="scope">
               <section class="flex items-center">
@@ -410,6 +409,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
         />
       </div>
     </el-card>
+
     <!-- 新增/修改 -->
     <el-dialog v-model="dialogVisible" :title="!formData.id ? '新增用户' : '修改用户'" width="500px" @closed="resetForm">
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="right">
