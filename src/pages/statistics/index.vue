@@ -188,7 +188,13 @@ function getUserCount() {
             <el-table-column prop="phonenumber" label="手机号" width="140" />
             <el-table-column prop="employmentDate" label="入职时间" width="140" />
             <!-- <el-table-column prop="disabledCard" label="残疾人证" width="220" /> -->
-            <el-table-column prop="company" label="所属公司" width="340" />
+            <el-table-column prop="company" label="所属公司" width="340">
+              <template #default="scope">
+                <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
+                  <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+                </el-tooltip>
+              </template>
+            </el-table-column>
             <el-table-column />
             <!-- <el-table-column fixed="right" width="1"/> -->
           </el-table>
