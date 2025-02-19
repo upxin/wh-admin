@@ -111,12 +111,12 @@ function update(row: TableData) {
   dialogVisible.value = true
   formData.value = cloneDeep(row)
 }
-let orderBy ={}
+let orderBy = {}
 const tableData = ref<TableData[]>([])
 const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
   userName: "",
-  company: '',
+  company: "",
   phonenumber: ""
 })
 function getTableData() {
@@ -222,17 +222,17 @@ function handleDetail(row, bizType) {
   })
 }
 function camelToSnakeCase(str: string) {
-  return str.replace(/([A-Z])/g, '_$1').toLowerCase();
+  return str.replace(/([A-Z])/g, "_$1").toLowerCase()
 }
 
 function removeLastSixChars(str: string) {
   if (str.length <= 6) {
-    return ''; // 如果字符串长度小于或等于6，返回空字符串
+    return "" // 如果字符串长度小于或等于6，返回空字符串
   }
-  return str.slice(0, -6);
+  return str.slice(0, -6)
 }
 function sortChange({ prop, order }: { prop: string, order: string }) {
-  orderBy = { orderBy: camelToSnakeCase(prop) + " " + removeLastSixChars(order) }
+  orderBy = { orderBy: `${camelToSnakeCase(prop)} ${removeLastSixChars(order)}` }
   getTableData()
 }
 // 监听分页参数的变化
@@ -244,13 +244,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form ref="searchFormRef" :inline="true" :model="searchData" label-position="right">
         <el-form-item prop="phonenumber" label="手机号">
-          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable style="width: 220px;"/>
+          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable style="width: 220px;" />
         </el-form-item>
         <el-form-item prop="userName" label="姓名">
-          <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;"/>
+          <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;" />
         </el-form-item>
         <el-form-item prop="userName" label="所属公司">
-          <el-input v-model="searchData.company" placeholder="请输入" clearable style="width: 220px;"/>
+          <el-input v-model="searchData.company" placeholder="请输入" clearable style="width: 220px;" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">
@@ -272,18 +272,22 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
           <el-table-column prop="employmentDate" label="入职时间" width="110" sortable="custom" />
           <el-table-column prop="leaveDate" label="离职时间" width="110" sortable="custom" />
-
-          <el-table-column prop="company" label="所属公司" sortable="custom"  width="300"/>
+          <el-table-column prop="company" label="所属公司" sortable="custom" width="400">
+            <template #default="scope">
+              <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
+                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column />
-
 
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="primary"  @click="newCompany(scope.row)">
+                <el-button type="primary" @click="newCompany(scope.row)">
                   入职新公司
                 </el-button>
-                <el-button type="success"  @click="_backCompany(scope.row)" style="margin-right: 20px;">
+                <el-button type="success" @click="_backCompany(scope.row)" style="margin-right: 20px;">
                   继续录用
                 </el-button>
                 <!-- <el-button type="danger" text bg @click="handleDelete(scope.row)" style="margin-right: 10px;">
