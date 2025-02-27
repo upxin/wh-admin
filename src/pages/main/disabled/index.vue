@@ -385,6 +385,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
                       >
                         薪酬详情
                       </el-button>
+                      <el-button
+                        type="primary" :text="true" @click="handleDetail(scope.row, 'check')"
+                        style="margin: 0;display: block;"
+                      >
+                        年审资料
+                      </el-button>
                     </div>
                   </template>
                   <template #reference>
