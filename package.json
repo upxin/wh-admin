@@ -34,9 +34,7 @@
     "screenfull": "6.0.2",
     "vue": "3.5.13",
     "vue-request": "2.0.4",
-    "vue-router": "4.5.0",
-    "vxe-table": "4.6.25",
-    "xgplayer": "3.0.20"
+    "vue-router": "4.5.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "3.11.2",

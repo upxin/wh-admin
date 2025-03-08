@@ -37,19 +37,19 @@ export function useResize() {
 
   // 在组件挂载前添加窗口大小变化事件监听器
   onBeforeMount(() => {
-    window.addEventListener("resize", resizeHandler)
+    // window.addEventListener("resize", resizeHandler)
   })
 
   // 在组件挂载后根据窗口大小判断设备类型并调整布局
-  onMounted(() => {
-    if (isMobile()) {
-      appStore.toggleDevice(DeviceEnum.Mobile)
-      appStore.closeSidebar(true)
-    }
-  })
+  // onMounted(() => {
+  //   if (isMobile()) {
+  //     appStore.toggleDevice(DeviceEnum.Mobile)
+  //     appStore.closeSidebar(true)
+  //   }
+  // })
 
   // 在组件卸载前移除窗口大小变化事件监听器
   onBeforeUnmount(() => {
-    window.removeEventListener("resize", resizeHandler)
+    // window.removeEventListener("resize", resizeHandler)
   })
 }

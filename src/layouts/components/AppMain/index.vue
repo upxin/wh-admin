@@ -5,6 +5,7 @@ import { Footer } from "../index"
 
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()
+console.log('tagsViewStore.cachedViews',  tagsViewStore.cachedViews)
 </script>
 
 <template>

@@ -142,14 +142,8 @@ function getUserCount() {
         </el-form-item>
         <el-form-item label="起始时间">
           <el-date-picker
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            v-model="formInline.date"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            clearable
+            format="YYYY-MM-DD" value-format="YYYY-MM-DD" v-model="formInline.date" type="daterange"
+            range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" clearable
           />
         </el-form-item>
         <el-form-item>
@@ -158,7 +152,9 @@ function getUserCount() {
           </el-button>
         </el-form-item>
       </el-form>
-      <div id="main" style="height: 400px;width:100%;" />
+      <div class="w-full flex justify-center">
+        <div id="main" style="height: 400px;width:600px;" />
+      </div>
     </el-card>
     <section class="flex">
       <div class="min-w-600px  flex-1 mr-30px">
@@ -168,19 +164,17 @@ function getUserCount() {
         <el-card>
           <el-table :data="tableData2" height="400">
             <el-table-column prop="userName" label="用户名" width="120" />
-            <el-table-column prop="sex" label="性别" width="80">
+            <el-table-column prop="phonenumber" label="手机号" width="140" />
+            <el-table-column prop="leaveDate" label="离职时间" width="140" />
+            <el-table-column prop="company" label="所属公司" width="340">
               <template #default="scope">
-                <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
-                  女
-                </el-tag>
-                <el-tag v-else type="warning" effect="plain" disable-transitions>
-                  男
-                </el-tag>
+                <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
+                  <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+                </el-tooltip>
               </template>
             </el-table-column>
-            <el-table-column prop="phonenumber" label="手机号" width="200" />
-            <el-table-column prop="leaveDate" label="离职时间" width="200" />
-            <el-table-column prop="company" label="所属公司" />
+            <el-table-column />
+            <!-- <el-table-column fixed="right" width="1"/> -->
           </el-table>
         </el-card>
       </div>
@@ -191,20 +185,18 @@ function getUserCount() {
         <el-card>
           <el-table :data="tableData1" height="400">
             <el-table-column prop="userName" label="用户名" width="120" />
-            <el-table-column prop="sex" label="性别" width="80">
+            <el-table-column prop="phonenumber" label="手机号" width="140" />
+            <el-table-column prop="employmentDate" label="入职时间" width="140" />
+            <!-- <el-table-column prop="disabledCard" label="残疾人证" width="220" /> -->
+            <el-table-column prop="company" label="所属公司" width="340">
               <template #default="scope">
-                <el-tag v-if="scope.row.sex === '0'" type="primary" effect="plain" disable-transitions>
-                  女
-                </el-tag>
-                <el-tag v-else type="warning" effect="plain" disable-transitions>
-                  男
-                </el-tag>
+                <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
+                  <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+                </el-tooltip>
               </template>
             </el-table-column>
-            <el-table-column prop="phonenumber" label="手机号" width="200" />
-            <el-table-column prop="employmentDate" label="入职时间" width="200" />
-            <!-- <el-table-column prop="disabledCard" label="残疾人证" width="220" /> -->
-            <el-table-column prop="company" label="所属公司" />
+            <el-table-column />
+            <!-- <el-table-column fixed="right" width="1"/> -->
           </el-table>
         </el-card>
       </div>

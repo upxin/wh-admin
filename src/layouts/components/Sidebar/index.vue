@@ -29,6 +29,22 @@ const activeTextColor = computed(() => (isLeft.value ? v3SidebarMenuActiveTextCo
 const sidebarMenuItemHeight = computed(() => !isTop.value ? "var(--v3-sidebar-menu-item-height)" : "var(--v3-navigationbar-height)")
 const sidebarMenuHoverBgColor = computed(() => !isTop.value ? "var(--v3-sidebar-menu-hover-bg-color)" : "transparent")
 const tipLineWidth = computed(() => !isTop.value ? "2px" : "0px")
+
+const defaultOpeneds = computed(() => {
+  const openPaths = [];
+
+  const extractPaths = (items) => {
+    items.forEach(item => {
+      if (item.children && item.children.length > 0) {
+        openPaths.push(item.path);
+        extractPaths(item.children);
+      }
+    });
+  };
+
+  extractPaths(noHiddenRoutes.value);
+  return openPaths;
+});
 </script>
 
 <template>
@@ -43,6 +59,7 @@ const tipLineWidth = computed(() => !isTop.value ? "2px" : "0px")
         :active-text-color="activeTextColor"
         :collapse-transition="false"
         :mode="isTop && !isMobile ? 'horizontal' : 'vertical'"
+        :default-openeds="defaultOpeneds"
       >
         <Item
           v-for="noHiddenRoute in noHiddenRoutes"
