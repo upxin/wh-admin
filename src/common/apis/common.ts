@@ -50,3 +50,41 @@ export function deleteFile(id: string) {
     method: "delete"
   })
 }
+
+export function getBizIds(disabledUserId: string) {
+  return request({
+    url: `/system/disabledUser/getBizIds`,
+    method: "get",
+    params: { disabledUserId }
+  })
+}
+
+export function downloadZipByBiz(data: any) {
+  return request({
+    url: `/file/file/downloadZipByBiz`,
+    method: "post",
+    data,
+    responseType: "blob"
+  })
+}
+
+export function downloadZip(blobData, fileName = "download.zip") {
+  // 创建一个 Blob 对象
+  const blob = new Blob([blobData], { type: "application/zip" })
+
+  // 创建一个 URL 对象
+  const url = URL.createObjectURL(blob)
+
+  // 创建一个 <a> 标签进行下载
+  const a = document.createElement("a")
+  a.href = url
+  a.download = fileName
+
+  // 触发下载
+  document.body.appendChild(a)
+  a.click()
+
+  // 清理资源
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}

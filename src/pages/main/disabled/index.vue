@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/type"
 import type { FormInstance, FormRules } from "element-plus"
-import { downTemplate, uploadFile } from "@@/apis/common"
+import { downloadZip, downloadZipByBiz, downTemplate, getBizIds, uploadFile } from "@@/apis/common"
 import { createTableDataApi, deleteTableDataApi, disabledUserLeave, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
 import { ArrowDown, Refresh, Search } from "@element-plus/icons-vue"
@@ -37,6 +37,15 @@ const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   employmentDate: [{ required: true, trigger: "blur", message: "请输入职时间" }],
   company: [{ required: true, trigger: "blur", message: "请输入所属公司" }]
 }
+function getDisabledFile({ id = "" }) {
+  getBizIds(id).then((res) => {
+    console.log(123, res)
+    downloadZipByBiz(res?.data).then((res) => {
+      downloadZip(res)
+    })
+  })
+}
+
 function handleCreateOrUpdate() {
   formRef.value?.validate((valid) => {
     if (!valid) {
@@ -345,9 +354,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
             </template>
           </el-table-column>
           <el-table-column />
-          <el-table-column fixed="right" label="操作" width="360">
+          <el-table-column fixed="right" label="操作" width="380">
             <template #default="scope">
               <section class="flex items-center">
+                <el-button type="success" @click="getDisabledFile(scope.row)">
+                  下载
+                </el-button>
                 <el-button type="primary" @click="handleUpdate(scope.row)">
                   修改
                 </el-button>
