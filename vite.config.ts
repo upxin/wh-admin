@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => {
     },
     // 构建配置
     build: {
+      outDir: "system",
       // 自定义底层的 Rollup 打包配置
       rollupOptions: {
         output: {
