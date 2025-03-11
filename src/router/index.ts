@@ -100,6 +100,15 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
+        path: "count",
+        component: () => import("@/pages/main/count/index.vue"),
+        name: "Count",
+        meta: {
+          title: "任务统计",
+          keepAlive: true
+        }
+      },
+      {
         path: "dimission",
         component: () => import("@/pages/main/dimission/index.vue"),
         name: "Dimission",
