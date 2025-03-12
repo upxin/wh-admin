@@ -284,15 +284,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column fixed="right" label="操作" width="340">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="primary" @click="newCompany(scope.row)">
-                  入职新公司
-                </el-button>
-                <el-button type="success" @click="_backCompany(scope.row)" style="margin-right: 20px;">
+                <el-button :text="true" type="success" @click="_backCompany(scope.row)">
                   继续录用
                 </el-button>
-                <!-- <el-button type="danger" text bg @click="handleDelete(scope.row)" style="margin-right: 10px;">
-                  删除
-                </el-button> -->
+                <el-button :text="true" type="primary" @click="newCompany(scope.row)" style="margin-right: 12px;">
+                  入职新公司
+                </el-button>
                 <el-popover placement="bottom" :width="110" trigger="click">
                   <template #default>
                     <div style="display: flex;align-items: center;flex-direction: column;">

@@ -354,66 +354,18 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
             </template>
           </el-table-column>
           <el-table-column />
-          <el-table-column fixed="right" label="操作" width="380">
+          <el-table-column fixed="right" label="操作" width="280">
             <template #default="scope">
               <section class="flex items-center">
-                <el-button type="success" @click="getDisabledFile(scope.row)">
-                  下载
-                </el-button>
-                <el-button type="primary" @click="handleUpdate(scope.row)">
+                <el-button :text="true" type="primary" @click="handleUpdate(scope.row)">
                   修改
                 </el-button>
-                <el-button type="danger" @click="dimission(scope.row)">
+                <el-button :text="true" type="danger" @click="dimission(scope.row)">
                   离职
                 </el-button>
-                <el-button type="danger" @click="handleDelete(scope.row)" style="margin-right: 20px;">
+                <el-button :text="true" type="danger" @click="handleDelete(scope.row)">
                   删除
                 </el-button>
-
-                <el-popover placement="bottom" :width="110" trigger="click">
-                  <template #default>
-                    <div style="display: flex;align-items: center;flex-direction: column;">
-                      <el-button
-                        type="primary" :text="true" @click="handleDetail(scope.row, 'pointRecord')"
-                        style="margin: 0;display: block;"
-                      >
-                        打卡记录
-                      </el-button>
-                      <el-button
-                        type="primary" :text="true" @click="handleDetail(scope.row, 'task')"
-                        style="margin: 0;display: block;"
-                      >
-                        任务详情
-                      </el-button>
-                      <el-button
-                        type="primary" :text="true" @click="handleDetail(scope.row, 'contract')"
-                        style="margin: 0;display: block;"
-                      >
-                        合同详情
-                      </el-button>
-                      <el-button
-                        type="primary" :text="true" @click="handleDetail(scope.row, 'pay')"
-                        style="margin: 0;display: block;"
-                      >
-                        薪酬详情
-                      </el-button>
-                      <el-button
-                        type="primary" :text="true" @click="handleDetail(scope.row, 'check')"
-                        style="margin: 0;display: block;"
-                      >
-                        年审资料
-                      </el-button>
-                    </div>
-                  </template>
-                  <template #reference>
-                    <span class="flex items-center cursor-pointer">
-                      <span style="color: #fe9739;"> 更多 </span>
-                      <el-icon class="el-icon--right" color="#fe9739">
-                        <ArrowDown />
-                      </el-icon>
-                    </span>
-                  </template>
-                </el-popover>
               </section>
             </template>
           </el-table-column>
