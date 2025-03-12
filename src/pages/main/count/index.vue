@@ -332,12 +332,19 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
           <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
 
-          <el-table-column prop="checkCount" label="上传年审材料次数" width="150" />
-          <el-table-column prop="contractCount" label="上传合同次数" width="110" />
           <el-table-column prop="pointCount" label="打卡次数" width="110" />
           <el-table-column prop="taskCount" label="任务次数" width="110" />
+          <el-table-column prop="contractCount" label="上传合同次数" width="110" />
           <el-table-column prop="payCount" label="上传薪酬次数" width="110" />
+          <el-table-column prop="checkCount" label="上传年审材料次数" width="150" />
 
+          <el-table-column prop="company" label="所属公司" sortable="custom" width="400">
+            <template #default="scope">
+              <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
+                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column />
           <el-table-column fixed="right" label="操作" width="450">
             <template #default="scope">
