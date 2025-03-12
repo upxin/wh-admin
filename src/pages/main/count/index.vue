@@ -5,6 +5,7 @@ import { downloadZip, downloadZipByBiz, downTemplate, getBizIds, uploadFile } fr
 import { selectTask } from "@@/apis/main/count"
 import { createTableDataApi, deleteTableDataApi, disabledUserLeave, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
+
 import { ArrowDown, Refresh, Search } from "@element-plus/icons-vue"
 import { ElDatePicker } from "element-plus"
 import { cloneDeep } from "lodash-es"
@@ -40,10 +41,13 @@ const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   company: [{ required: true, trigger: "blur", message: "请输入所属公司" }]
 }
 function getDisabledFile({ id = "" }) {
+  const loadingInstance = ElLoading.service({ text: "正在下载..." })
   getBizIds(id).then((res) => {
     console.log(123, res)
     downloadZipByBiz(res?.data).then((res) => {
-      downloadZip(res)
+      downloadZip(res).then(() => {
+        loadingInstance.close()
+      })
     })
   })
 }
@@ -341,7 +345,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
           <el-table-column prop="company" label="所属公司" sortable="custom" width="400">
             <template #default="scope">
               <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
-                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{
+                  scope.row.company }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
