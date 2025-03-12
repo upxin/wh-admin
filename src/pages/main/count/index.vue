@@ -299,36 +299,36 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
 </script>
 
 <template>
-  <section>
-    <div class="app-container">
-      <el-card v-loading="loading" shadow="never" class="search-wrapper">
-        <el-form ref="searchFormRef" :inline="true" :model="searchData" label-position="right">
-          <el-form-item prop="phonenumber" label="手机号">
-            <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable style="width: 220px;" />
-          </el-form-item>
-          <el-form-item prop="userName" label="姓名">
-            <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;" />
-          </el-form-item>
-          <el-form-item prop="userName" label="日期范围">
-            <ElDatePicker
-              v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
-              end-placeholder="结束日期" value-format="YYYY-MM-DD"
-            >
-            </ElDatePicker>
-          </el-form-item>
+  <div class="app-container">
+    <el-card v-loading="loading" shadow="never" class="search-wrapper">
+      <el-form ref="searchFormRef" :inline="true" :model="searchData" label-position="right">
+        <el-form-item prop="phonenumber" label="手机号">
+          <el-input v-model="searchData.phonenumber" placeholder="请输入" clearable style="width: 220px;" />
+        </el-form-item>
+        <el-form-item prop="userName" label="姓名">
+          <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;" />
+        </el-form-item>
+        <el-form-item prop="userName" label="日期范围">
+          <ElDatePicker
+            v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
+            end-placeholder="结束日期" value-format="YYYY-MM-DD"
+          >
+          </ElDatePicker>
+        </el-form-item>
 
-          <el-form-item>
-            <el-button type="primary" :icon="Search" @click="handleSearch">
-              查询
-            </el-button>
-            <el-button :icon="Refresh" @click="resetSearch">
-              重置
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
+        <el-form-item>
+          <el-button type="primary" :icon="Search" @click="handleSearch">
+            查询
+          </el-button>
+          <el-button :icon="Refresh" @click="resetSearch">
+            重置
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
 
-      <el-card v-loading="loading" shadow="never">
+    <el-card v-loading="loading" shadow="never">
+      <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange" @sort-change="sortChange">
           <el-table-column type="selection" width="50" />
           <el-table-column prop="userName" label="姓名" width="90" />
@@ -336,11 +336,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
           <el-table-column prop="idCard" label="身份证号码" width="180" />
           <el-table-column prop="disabledCard" label="残疾证号码" width="200" />
 
-          <el-table-column prop="pointCount" label="打卡次数" width="110" />
-          <el-table-column prop="taskCount" label="任务次数" width="110" />
-          <el-table-column prop="contractCount" label="上传合同次数" width="110" />
-          <el-table-column prop="payCount" label="上传薪酬次数" width="110" />
-          <el-table-column prop="checkCount" label="上传年审材料次数" width="150" />
+          <el-table-column prop="pointCount" label="打卡/次" width="110" />
+          <el-table-column prop="taskCount" label="任务/次" width="110" />
+          <el-table-column prop="contractCount" label="合同/次" width="110" />
+          <el-table-column prop="payCount" label=" 薪酬/次" width="110" />
+          <el-table-column prop="checkCount" label="年审材料/次" width="150" />
 
           <el-table-column prop="company" label="所属公司" sortable="custom" width="400">
             <template #default="scope">
@@ -405,16 +405,16 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
             </template>
           </el-table-column>
         </el-table>
-      </el-card>
-    </div>
-    <div class="pager-wrapper">
-      <el-pagination
-        background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
-        :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
-        @size-change="handleSizeChange" @current-change="handleCurrentChange"
-      />
-    </div>
-  </section>
+      </div>
+      <div class="pager-wrapper">
+        <el-pagination
+          background :layout="paginationData.layout" :page-sizes="paginationData.pageSizes"
+          :total="paginationData.total" :page-size="paginationData.pageSize" :current-page="paginationData.currentPage"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        />
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <style lang="scss" scoped>

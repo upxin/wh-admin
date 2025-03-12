@@ -148,6 +148,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               </video>
             </template>
           </el-table-column>
+          <el-table-column v-if="route.query.bizType !== 'pointRecord'" prop="createTime" label="上传时间"></el-table-column>
           <el-table-column v-if="route.query.bizType === 'pointRecord'" prop="pointTime" label="打卡时间"></el-table-column>
           <el-table-column v-if="route.query.bizType === 'pointRecord'" prop="pointAddressReal" label="打卡地点"></el-table-column>
           <el-table-column label="操作" width="300">
