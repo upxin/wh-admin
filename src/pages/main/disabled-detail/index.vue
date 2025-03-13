@@ -55,6 +55,7 @@ function delMultiple() {
 
 const tableData = ref<TableData[]>([])
 function getTableData() {
+  loading.value = true
   const { bizType, bizId } = route.query
   if (bizType === "pointRecord") {
     pointRecord({
@@ -65,6 +66,8 @@ function getTableData() {
       console.log("res.rows========", res.rows)
       tableData.value = res.rows
       paginationData.total = res.total
+    }).finally(() => {
+      loading.value = false
     })
     return
   }
@@ -76,6 +79,8 @@ function getTableData() {
   }).then((res) => {
     tableData.value = res.rows
     paginationData.total = res.total
+  }).finally(() => {
+    loading.value = false
   })
 }
 const multipleSelection = ref<TableData[]>([])
@@ -142,15 +147,24 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column type="selection" width="50" />
           <el-table-column :label="type">
             <template #default="scope">
-              <el-image v-if="getFileType(scope.row.url) === 'image'" style="width: 100px;height: 100px;" :src="scope.row.url" :preview-src-list="[scope.row.url]" :preview-teleported="true" />
+              <el-image
+                v-if="getFileType(scope.row.url) === 'image'" style="width: 100px;height: 100px;"
+                :src="scope.row.url" :preview-src-list="[scope.row.url]" :preview-teleported="true"
+              />
               <video v-else controls style="width: 400px;height: 260px;">
                 <source :src="scope.row.url" type="video/mp4">
               </video>
             </template>
           </el-table-column>
-          <el-table-column v-if="route.query.bizType !== 'pointRecord'" prop="createTime" label="上传时间"></el-table-column>
+          <el-table-column
+            v-if="route.query.bizType !== 'pointRecord'" prop="createTime"
+            label="上传时间"
+          ></el-table-column>
           <el-table-column v-if="route.query.bizType === 'pointRecord'" prop="pointTime" label="打卡时间"></el-table-column>
-          <el-table-column v-if="route.query.bizType === 'pointRecord'" prop="pointAddressReal" label="打卡地点"></el-table-column>
+          <el-table-column
+            v-if="route.query.bizType === 'pointRecord'" prop="pointAddressReal"
+            label="打卡地点"
+          ></el-table-column>
           <el-table-column label="操作" width="300">
             <template #default="scope">
               <el-button :text="true" type="danger" @click="handleDelete(scope.row)">
