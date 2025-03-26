@@ -2,7 +2,7 @@
 import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/type"
 import type { FormInstance, FormRules } from "element-plus"
 import { downloadZip, downloadZipByBiz, downTemplate, getBizIds, uploadFile } from "@@/apis/common"
-import { selectTask } from "@@/apis/main/count"
+import { getTask, selectTask } from "@@/apis/main/count"
 import { createTableDataApi, deleteTableDataApi, disabledUserLeave, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
 
@@ -255,9 +255,9 @@ async function exportExcel() {
   const opts = {
     exportFlag: 1,
     pageNum: 1,
-    pageSize: 999
+    pageSize: 30000
   }
-  getMan(opts).then((res) => {
+  getTask(opts).then((res) => {
     console.log("getTableDataApi====", res)
     getExcel(res)
   })
@@ -277,7 +277,6 @@ function handleDetail(row, bizType) {
     }
   })
 }
-
 function camelToSnakeCase(str: string) {
   return str.replace(/([A-Z])/g, "_$1").toLowerCase()
 }
@@ -328,6 +327,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
     </el-card>
 
     <el-card v-loading="loading" shadow="never">
+      <div class="toolbar-wrapper">
+        <div flex>
+          <el-button type="primary" @click="exportExcel">
+            导出列表
+          </el-button>
+        </div>
+      </div>
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange" @sort-change="sortChange">
           <el-table-column type="selection" width="50" />

@@ -5,7 +5,7 @@ import { useSettingsStore } from "@/pinia/stores/settings"
 import { useUserStore } from "@/pinia/stores/user"
 import logo from "@@/assets/images/layouts/logo.png?url"
 import ThemeSwitch from "@@/components/ThemeSwitch/index.vue"
-import { Key, Loading, Lock, Picture, User } from "@element-plus/icons-vue"
+import { HomeFilled, Key, Loading, Lock, Picture, User } from "@element-plus/icons-vue"
 import { loginApi } from "./apis"
 import Owl from "./components/Owl.vue"
 import { useFocus } from "./composables/useFocus"
@@ -176,6 +176,12 @@ function handleLogin() {
       </div>
       <div class="content">
         <el-form ref="loginFormRef" :model="loginFormData" :rules="loginFormRules" @keyup.enter="handleLogin">
+          <el-form-item prop="tenantCode">
+            <el-input
+              v-model.trim="loginFormData.tenantCode" placeholder="租户" type="text" tabindex="1"
+              :prefix-icon="HomeFilled" size="large"
+            />
+          </el-form-item>
           <el-form-item prop="username">
             <el-input
               v-model.trim="loginFormData.username" placeholder="用户名" type="text" tabindex="1"

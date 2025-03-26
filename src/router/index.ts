@@ -49,10 +49,52 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/",
     component: Layouts,
-    redirect: "/statistics",
+    redirect: "/disabled",
     children: [
       {
-        path: "statistics",
+        path: "/disabled",
+        component: () => import("@/pages/main/disabled/index.vue"),
+        name: "Disabled",
+        meta: {
+          title: "残疾人员",
+          keepAlive: true,
+          elIcon: "DataBoard"
+        }
+      }
+    ]
+  },
+  {
+    path: "/count",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/main/count/index.vue"),
+        name: "Count",
+        meta: {
+          title: "任务统计",
+          keepAlive: true,
+          elIcon: "Checked"
+        }
+      },
+      {
+        path: "disabled-detail",
+        component: () => import("@/pages/main/disabled-detail/index.vue"),
+        name: "DisabledDetail",
+        meta: {
+          title: "",
+          keepAlive: false,
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/statistics",
+    component: Layouts,
+    children: [
+      {
+        path: "",
         component: () => import("@/pages/statistics/index.vue"),
         name: "Statistics",
         meta: {
@@ -64,67 +106,33 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: "/home",
+    path: "/dimission",
     component: Layouts,
-    redirect: "/dashboard",
     children: [
       {
-        path: "/user",
+        path: "",
+        component: () => import("@/pages/main/dimission/index.vue"),
+        name: "Dimission",
+        meta: {
+          title: "离职人员",
+          keepAlive: false,
+          elIcon: "Avatar"
+        }
+      }
+    ]
+  },
+  {
+    path: "/user",
+    component: Layouts,
+    children: [
+      {
+        path: "",
         component: () => import("@/pages/main/user/index.vue"),
         name: "User",
         meta: {
           title: "用户管理",
           svgIcon: "user",
           keepAlive: false
-        }
-      }
-    ]
-  },
-  {
-    path: "/main",
-    component: Layouts,
-    redirect: "/main/disabled",
-    name: "Demo",
-    meta: {
-      title: "残疾人管理",
-      elIcon: "DataBoard"
-    },
-    children: [
-      {
-        path: "disabled",
-        component: () => import("@/pages/main/disabled/index.vue"),
-        name: "Disabled",
-        meta: {
-          title: "残疾人员",
-          keepAlive: true
-        }
-      },
-      {
-        path: "count",
-        component: () => import("@/pages/main/count/index.vue"),
-        name: "Count",
-        meta: {
-          title: "任务统计",
-          keepAlive: true
-        }
-      },
-      {
-        path: "dimission",
-        component: () => import("@/pages/main/dimission/index.vue"),
-        name: "Dimission",
-        meta: {
-          title: "离职人员",
-          keepAlive: false
-        }
-      },
-      {
-        path: "disabled-detail",
-        component: () => import("@/pages/main/disabled-detail/index.vue"),
-        name: "DisabledDetail",
-        meta: {
-          title: "",
-          keepAlive: false,
-          hidden: true
         }
       }
     ]

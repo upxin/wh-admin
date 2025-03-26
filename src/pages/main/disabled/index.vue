@@ -244,7 +244,7 @@ async function exportExcel() {
   const opts = {
     exportFlag: 1,
     pageNum: 1,
-    pageSize: 999
+    pageSize: 30000
   }
   getMan(opts).then((res) => {
     console.log("getTableDataApi====", res)

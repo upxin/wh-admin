@@ -209,7 +209,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getUser
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" />
-          <el-table-column prop="userName" label="用户名" width="180" />
+          <el-table-column prop="userName" label="用户名" width="280" />
           <el-table-column prop="loginName" label="登录名" width="180" />
           <el-table-column prop="roleName" label="角色" />
           <el-table-column fixed="right" label="操作" width="180">

@@ -7,3 +7,12 @@ export function selectTask(params: any) {
     method: "get"
   })
 }
+
+export function getTask(params: any) {
+  return request({
+    url: "/system/disabledUser/selectTask",
+    params,
+    method: "get",
+    responseType: "blob"
+  })
+}

@@ -3,6 +3,7 @@ export interface LoginRequestData {
   username: string
   /** 密码 */
   password: string
+  tenantCode: string
 }
 
 export type LoginCodeResponseData = ApiResponseData<string>
