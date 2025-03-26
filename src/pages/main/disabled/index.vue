@@ -27,7 +27,8 @@ const formData = ref<CreateOrUpdateTableRequestData>({
   phonenumber: "",
   userName: "",
   disabledCard: "",
-  employmentDate: ""
+  employmentDate: "",
+  channel: ""
 })
 const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   userName: [{ required: true, trigger: "blur", message: "请输入姓名" }],
@@ -72,7 +73,8 @@ function resetForm() {
     idCard: "",
     phonenumber: "",
     userName: "",
-    disabledCard: ""
+    disabledCard: "",
+    channel: ""
   }
 }
 // #endregion
@@ -349,10 +351,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
           <el-table-column prop="company" label="所属公司" sortable="custom" width="400">
             <template #default="scope">
               <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
-                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{
+                  scope.row.company }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
+          <el-table-column prop="channel" label="渠道" width="210" sortable="custom" show-overflow-tooltip />
+
           <el-table-column />
           <el-table-column fixed="right" label="操作" width="280">
             <template #default="scope">
@@ -413,6 +418,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
         </el-form-item>
         <el-form-item prop="company" label="所属公司">
           <el-input v-model="formData.company" placeholder="请输入所属公司" />
+        </el-form-item>
+        <el-form-item prop="company" label="渠道">
+          <el-input v-model="formData.channel" placeholder="请输入渠道" />
         </el-form-item>
       </el-form>
       <template #footer>

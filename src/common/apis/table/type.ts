@@ -6,6 +6,7 @@ export interface CreateOrUpdateTableRequestData {
   id: string
   employmentDate: string
   disabledCard: string
+  channel: string
 }
 
 export interface TableRequestData {
