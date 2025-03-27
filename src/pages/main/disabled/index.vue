@@ -356,7 +356,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="channel" label="渠道" width="210" sortable="custom" show-overflow-tooltip />
+          <el-table-column prop="channel" label="渠道" width="210" show-overflow-tooltip />
 
           <el-table-column />
           <el-table-column fixed="right" label="操作" width="280">

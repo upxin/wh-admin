@@ -275,11 +275,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="company" label="所属公司" sortable="custom" width="400">
             <template #default="scope">
               <el-tooltip class="item" effect="dark" :content="scope.row.company" placement="top">
-                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ scope.row.company }}</span>
+                <span class="inline-block max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{{
+                  scope.row.company }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="channel" label="渠道" width="210" sortable="custom" show-overflow-tooltip />
+          <el-table-column prop="channel" label="渠道" width="210" show-overflow-tooltip />
 
           <el-table-column />
 
