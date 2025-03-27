@@ -244,9 +244,22 @@ async function downloadExcel() {
 }
 async function exportExcel() {
   const opts = {
-    exportFlag: 1,
-    pageNum: 1,
-    pageSize: 30000
+    pageNum: paginationData.currentPage,
+    pageSize: 10000,
+    status: "0", // 在职
+    exportFlag: 1
+  }
+  if (searchData.userName) {
+    Reflect.set(opts, "userName", searchData.userName)
+    opts.pageSize = paginationData.pageSize
+  }
+  if (searchData.phonenumber) {
+    Reflect.set(opts, "phonenumber", searchData.phonenumber)
+    opts.pageSize = paginationData.pageSize
+  }
+  if (searchData.company) {
+    Reflect.set(opts, "company", searchData.company)
+    opts.pageSize = paginationData.pageSize
   }
   getMan(opts).then((res) => {
     console.log("getTableDataApi====", res)
@@ -300,7 +313,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;" />
         </el-form-item>
-        <el-form-item prop="userName" label="所属公司">
+        <el-form-item prop="company" label="所属公司">
           <el-input v-model="searchData.company" placeholder="请输入" clearable style="width: 220px;" />
         </el-form-item>
         <el-form-item>

@@ -7,6 +7,7 @@ import { createTableDataApi, deleteTableDataApi, disabledUserLeave, getMan, getT
 import { usePagination } from "@@/composables/usePagination"
 
 import { ArrowDown, Refresh, Search } from "@element-plus/icons-vue"
+import dayjs from "dayjs"
 import { ElDatePicker } from "element-plus"
 import { cloneDeep } from "lodash-es"
 import "element-plus/theme-chalk/el-date-picker.css"
@@ -15,6 +16,12 @@ defineOptions({
   // 命名当前组件  否则keep-alive缓存不生效
   name: "Count"
 })
+
+// 获取当月第一天的字符串
+const firstDay = dayjs().startOf("month").format("YYYY-MM-DD")
+
+// 获取当月最后一天的字符串
+const lastDay = dayjs().endOf("month").format("YYYY-MM-DD")
 const router = useRouter()
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
@@ -169,7 +176,8 @@ const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
   userName: "",
   phonenumber: "",
-  company: ""
+  company: "",
+  time: [firstDay, lastDay]
 })
 function getTableData() {
   loading.value = true
@@ -188,9 +196,9 @@ function getTableData() {
     Reflect.set(opts, "company", searchData.company)
   }
 
-  if (time?.value?.length) {
-    Reflect.set(opts, "startDate", time.value[0])
-    Reflect.set(opts, "endDate", time.value[1])
+  if (searchData.time.length) {
+    Reflect.set(opts, "startDate", searchData.time[0])
+    Reflect.set(opts, "endDate", searchData.time[1])
   }
 
   if (orderBy) {
@@ -253,9 +261,31 @@ async function downloadExcel() {
 }
 async function exportExcel() {
   const opts = {
-    exportFlag: 1,
-    pageNum: 1,
-    pageSize: 30000
+    pageNum: paginationData.currentPage,
+    pageSize: 10000,
+    status: "0", // 在职
+    exportFlag: 1
+  }
+  if (searchData.userName) {
+    Reflect.set(opts, "userName", searchData.userName)
+    opts.pageSize = paginationData.pageSize
+  }
+  if (searchData.phonenumber) {
+    Reflect.set(opts, "phonenumber", searchData.phonenumber)
+    opts.pageSize = paginationData.pageSize
+  }
+  if (searchData.company) {
+    Reflect.set(opts, "company", searchData.company)
+    opts.pageSize = paginationData.pageSize
+  }
+
+  if (searchData.time.length) {
+    Reflect.set(opts, "startDate", searchData.time[0])
+    Reflect.set(opts, "endDate", searchData.time[1])
+  }
+
+  if (orderBy) {
+    Object.assign(opts, orderBy)
   }
   getTask(opts).then((res) => {
     console.log("getTableDataApi====", res)
@@ -307,9 +337,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], () => {
         <el-form-item prop="userName" label="姓名">
           <el-input v-model="searchData.userName" placeholder="请输入" clearable style="width: 220px;" />
         </el-form-item>
-        <el-form-item prop="userName" label="日期范围">
+        <el-form-item prop="time" label="日期范围">
           <ElDatePicker
-            v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
+            v-model="searchData.time" type="daterange" range-separator="至" start-placeholder="开始日期"
             end-placeholder="结束日期" value-format="YYYY-MM-DD"
           >
           </ElDatePicker>
