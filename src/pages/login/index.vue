@@ -27,7 +27,7 @@ const loading = ref(false)
 /** 登录表单数据 */
 const loginFormData: LoginRequestData = reactive({
   username: "",
-  tenantCode: "enjoy",
+  tenantCode: "",
   password: ""
 })
 
