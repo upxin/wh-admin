@@ -100,7 +100,7 @@ function getUserCount() {
     <el-card>
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="年份">
-          <el-date-picker v-model="formInline.year" type="year" clearable />
+          <el-date-picker v-model="formInline.year" type="year" clearable format="YYYY" value-format="YYYY" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getUserCount">
