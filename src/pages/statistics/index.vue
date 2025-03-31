@@ -72,7 +72,15 @@ function setOpts(x: any, y: any) {
     series: [
       {
         data: y,
-        type: "bar"
+        type: "bar",
+        label: {
+          fontSize: 14, // 字体大小
+          fontWeight: "bold", // 字体粗细
+          fontFamily: "Arial", // 字体家族
+          show: true, // 显示标签
+          color: "#fff"
+          // position: 'top' // 标签位置，这里设置为柱子顶部
+        }
       }
     ]
   }
