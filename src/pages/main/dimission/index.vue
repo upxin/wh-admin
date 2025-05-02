@@ -213,7 +213,7 @@ function handleSelectionChange(val: TableData[]) {
 function handleDetail(row, bizType) {
   const { id: bizId, phonenumber } = row
   router.push({
-    path: "/main/disabled-detail",
+    path: "/count/disabled-detail",
     query: {
       bizType,
       bizId,
@@ -368,6 +368,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-form-item>
         <el-form-item prop="company" label="所属公司">
           <el-input v-model="formData.company" placeholder="请输入所属公司" />
+        </el-form-item>
+        <el-form-item prop="channel" label="渠道">
+          <el-input v-model="formData.channel" placeholder="请输入渠道" />
         </el-form-item>
       </el-form>
       <template #footer>

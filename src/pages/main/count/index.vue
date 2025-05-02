@@ -299,7 +299,7 @@ function handleSelectionChange(val: TableData[]) {
 function handleDetail(row, bizType) {
   const { id: bizId, phonenumber } = row
   router.push({
-    path: "/main/disabled-detail",
+    path: "/count/disabled-detail",
     query: {
       bizType,
       bizId,
