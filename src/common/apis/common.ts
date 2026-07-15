@@ -36,6 +36,27 @@ export function downTemplate() {
   })
 }
 
+export function uploadBizFile<T>(files: { raw: File }[], data: Record<string, any> = {}): Promise<T> {
+  const formData = new FormData()
+
+  files.forEach((file) => {
+    formData.append(`file`, file.raw)
+  })
+
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key])
+  })
+
+  return request({
+    url: "/file/file/upload",
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data"
+    },
+    data: formData
+  })
+}
+
 export function getByBiz(params: any) {
   return request({
     url: "/file/file/getByBizPage",

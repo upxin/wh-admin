@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { CreateOrUpdateTableRequestData, TableData } from "@@/apis/table/type"
 import type { FormInstance, FormRules } from "element-plus"
-import { deleteFile, downTemplate, getByBiz } from "@@/apis/common"
+import { deleteFile, downTemplate, getByBiz, uploadBizFile } from "@@/apis/common"
 import { delPointRecord, pointRecord } from "@@/apis/main/disabled-detail/index"
 import { createTableDataApi, deleteTableDataApi, getMan, getTableDataApi, updateTableDataApi } from "@@/apis/table"
 import { usePagination } from "@@/composables/usePagination"
@@ -88,11 +88,21 @@ function handleSelectionChange(val: TableData[]) {
   multipleSelection.value = val
 }
 
+const fileList = ref([])
+function customUpload() {
+  const { bizType, bizId } = route.query
+  uploadBizFile(fileList.value, { bizType, bizId }).then(() => {
+    fileList.value = []
+    getTableData()
+  })
+}
+
 const titleMap = {
   task: "任务详情",
   pointRecord: "打卡记录",
   contract: "合同详情",
-  pay: "薪酬详情"
+  pay: "薪酬详情",
+  check: "年审资料"
 }
 function getFileType(url) {
   if (!url) return "image"
@@ -101,12 +111,16 @@ function getFileType(url) {
 
   const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"]
   const videoExtensions = ["mp4", "avi", "mov", "wmv", "flv", "mkv", "webm"]
+  const pdfExtensions = ["pdf"]
 
   if (imageExtensions.includes(extension)) {
     return "image"
   } else if (videoExtensions.includes(extension)) {
     return "video"
+  } else if (pdfExtensions.includes(extension)) {
+    return "pdf"
   }
+  return "other"
 }
 
 const currentPointImage = ref("")
@@ -134,9 +148,20 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
         <div flex justify-between>
-          <el-button type="danger" @click="delMultiple">
-            批量删除
-          </el-button>
+          <div flex>
+            <el-upload
+              v-if="route.query.bizType === 'check'"
+              v-model:file-list="fileList" action="" multiple :limit="10" :http-request="customUpload"
+              class="mr-10px" accept="image/*,video/*,.pdf"
+            >
+              <el-button type="primary" :icon="Upload">
+                上传年审资料
+              </el-button>
+            </el-upload>
+            <el-button type="danger" @click="delMultiple" class="mr-10px">
+              批量删除
+            </el-button>
+          </div>
           <el-button :icon="Refresh" @click="getTableData">
             刷新
           </el-button>
@@ -145,15 +170,24 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="table-wrapper">
         <el-table :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" />
+          <el-table-column label="用户名" width="120">
+            <template #default>
+              {{ route.query.userName }}
+            </template>
+          </el-table-column>
           <el-table-column :label="type">
             <template #default="scope">
               <el-image
                 v-if="getFileType(scope.row.url) === 'image'" style="width: 100px;height: 100px;"
                 :src="scope.row.url" :preview-src-list="[scope.row.url]" :preview-teleported="true"
               />
-              <video v-else controls style="width: 400px;height: 260px;">
+              <video v-else-if="getFileType(scope.row.url) === 'video'" controls style="width: 400px;height: 260px;">
                 <source :src="scope.row.url" type="video/mp4">
               </video>
+              <a v-else-if="getFileType(scope.row.url) === 'pdf'" :href="scope.row.url" target="_blank" class="text-blue-500 underline">
+                查看 PDF
+              </a>
+              <span v-else>{{ scope.row.url }}</span>
             </template>
           </el-table-column>
           <el-table-column

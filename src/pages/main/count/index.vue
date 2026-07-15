@@ -297,13 +297,14 @@ function handleSelectionChange(val: TableData[]) {
   multipleSelection.value = val
 }
 function handleDetail(row, bizType) {
-  const { id: bizId, phonenumber } = row
+  const { id: bizId, phonenumber, userName } = row
   router.push({
     path: "/count/disabled-detail",
     query: {
       bizType,
       bizId,
-      phonenumber
+      phonenumber,
+      userName
     }
   })
 }
